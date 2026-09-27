@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Credenciales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+<body class="min-h-screen bg-[#f7f3ec]">
+  <nav class="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
+      <a href="dashboard.html" class="flex items-center gap-2">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-600 text-white text-sm font-black">SA</div>
+        <span class="text-lg font-black text-slate-900">SuperAdmin</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="restaurantes.html" class="rounded-xl px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100">Restaurantes</a>
+        <a href="credenciales.html" class="rounded-xl bg-purple-50 px-3 py-2 text-sm font-bold text-purple-700">Credenciales</a>
+        <button onclick="saCerrarSesion()" class="ml-2 rounded-xl bg-red-50 px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-100">
+          <i class="bi bi-box-arrow-right me-1"></i>Salir
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-7xl px-4 py-6 md:px-6">
+    <!-- Selector restaurante -->
+    <div class="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      <label class="mb-2 block text-xs font-black uppercase tracking-wide text-slate-500">Seleccionar restaurante</label>
+      <div class="flex items-center gap-3">
+        <select id="sa-rest-select" class="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-purple-500">
+          <option value="">Cargando restaurantes...</option>
+        </select>
+        <button onclick="cargarCredenciales()" class="rounded-xl bg-purple-600 px-5 py-3 text-sm font-black text-white hover:bg-purple-700 transition-all">
+          <i class="bi bi-arrow-clockwise me-1"></i>Cargar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="mb-5 flex gap-2">
+      <button onclick="showTab('admins')" id="tab-admins" class="sa-tab active">
+        <i class="bi bi-shield-lock me-1"></i>Admins
+      </button>
+      <button onclick="showTab('meseros')" id="tab-meseros" class="sa-tab">
+        <i class="bi bi-person-video2 me-1"></i>Meseros
+      </button>
+      <button onclick="showTab('cocineros')" id="tab-cocineros" class="sa-tab">
+        <i class="bi bi-fire me-1"></i>Cocineros
+      </button>
+    </div>
+
+    <!-- Botón crear -->
+    <div class="mb-4 flex justify-end">
+      <button onclick="abrirModal()" class="rounded-2xl bg-purple-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-purple-900/20 hover:bg-purple-700 transition-all">
+        <i class="bi bi-plus-lg me-1"></i>Nueva credencial
+      </button>
+    </div>
+
+    <!-- Lista -->
+    <div id="sa-creds-list" class="space-y-3">
+      <p class="text-sm text-slate-400 text-center py-10">Selecciona un restaurante para ver sus credenciales.</p>
+    </div>
+  </main>
+
+  <!-- Modal crear/editar credencial -->
+  <div id="sa-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="mx-4 w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl">
+      <div class="mb-5 flex items-center justify-between">
+        <h3 class="text-lg font-black text-slate-900" id="modal-cred-title">Nueva credencial</h3>
+        <button onclick="cerrarModal()" class="text-slate-400 hover:text-slate-600"><i class="bi bi-x-lg text-lg"></i></button>
+      </div>
+      <form id="sa-form-cred" class="space-y-4">
+        <div>
+          <label class="mb-1 block text-xs font-black uppercase text-slate-500">Tipo</label>
+          <select id="f-tipo" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500">
+            <option value="admin">Administrador</option>
+            <option value="mesero">Mesero</option>
+            <option value="cocinero">Cocinero</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Nombre</label>
+            <input id="f-nom" type="text" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="Juan" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Apellidos</label>
+            <input id="f-apell" type="text" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Usuario</label>
+            <input id="f-usuario" type="text" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="juan01" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Correo</label>
+            <input id="f-correo" type="email" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" />
+          </div>
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-black uppercase text-slate-500" id="label-clave">Contraseña</label>
+          <input id="f-clave" type="text" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="Mínimo 6 caracteres" />
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal()" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+          <button type="submit" class="rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-black text-white hover:bg-purple-700">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/superadmin-auth.js"></script>
+  <script>
+    let currentSlug = "";
+    let currentTab = "admins";
+    let credsData = { admins: [], meseros: [], cocineros: [] };
+    let editingId = null;
+    let editingTipo = null;
+
+    const TAB_A_TIPO = { admins: "admin", meseros: "mesero", cocineros: "cocinero" };
+
+    function showTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll(".sa-tab").forEach(t => t.classList.remove("active"));
+      document.getElementById("tab-" + tab).classList.add("active");
+      renderCreds();
+    }
+
+    function renderCreds() {
+      const list = document.getElementById("sa-creds-list");
+      const items = credsData[currentTab] || [];
+      if (!items.length) {
+        list.innerHTML = `<p class="text-sm text-slate-400 text-center py-10">No hay ${currentTab} registrados.</p>`;
+        return;
+      }
+      list.innerHTML = items.map(c => {
+        const nombre = c.nombre || c.nombres || c.usuario;
+        const apellidos = c.apellidos || "";
+        const email = c.correo || "";
+        const isActivo = c.estado === true || c.estado === "activo" || c.estado === "Activo" || c.estado === "true";
+        const cJson = JSON.stringify(c).replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+        return `
+          <div class="flex items-center justify-between rounded-2xl border border-slate-100 bg-white p-4 hover:border-purple-200 transition-all">
+            <div class="flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-purple-700 text-sm font-black">
+                ${nombre.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <p class="text-sm font-black text-slate-900">${nombre} ${apellidos}</p>
+                <p class="text-xs text-slate-500">@${c.usuario}${email ? " · " + email : ""}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="rounded-lg px-2 py-1 text-xs font-bold ${isActivo ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">${isActivo ? 'Activo' : 'Inactivo'}</span>
+              <button onclick='editarCred(${cJson}, "${TAB_A_TIPO[currentTab]}")' class="rounded-xl bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button onclick="toggleCred(${c.id}, '${TAB_A_TIPO[currentTab]}')" class="rounded-xl px-3 py-2 text-xs font-bold ${isActivo ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'}" title="${isActivo ? 'Desactivar' : 'Activar'}">
+                <i class="bi bi-${isActivo ? 'pause' : 'play'}"></i>
+              </button>
+              <button onclick="eliminarCred(${c.id}, '${TAB_A_TIPO[currentTab]}', '${nombre}')" class="rounded-xl bg-red-50 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-100" title="Eliminar">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function cargarCredenciales() {
+      currentSlug = document.getElementById("sa-rest-select").value;
+      if (!currentSlug) return;
+      try {
+        const { data } = await saApi(`/superadmin/restaurantes/${currentSlug}/credenciales`);
+        credsData = data;
+        renderCreds();
+      } catch (err) { alert(err.message); }
+    }
+
+    function abrirModal(tipo) {
+      editingId = null;
+      editingTipo = null;
+      document.getElementById("modal-cred-title").textContent = "Nueva credencial";
+      document.getElementById("f-tipo").value = tipo || "admin";
+      document.getElementById("f-nom").value = "";
+      document.getElementById("f-apell").value = "";
+      document.getElementById("f-usuario").value = "";
+      document.getElementById("f-correo").value = "";
+      document.getElementById("f-clave").value = "";
+      document.getElementById("sa-modal").classList.remove("hidden");
+      document.getElementById("sa-modal").classList.add("flex");
+    }
+
+    function editarCred(c, tipo) {
+      editingId = c.id;
+      editingTipo = tipo;
+      document.getElementById("modal-cred-title").textContent = "Editar credencial";
+      document.getElementById("f-tipo").value = tipo;
+      document.getElementById("f-nom").value = c.nombre || c.nombres || "";
+      document.getElementById("f-apell").value = c.apellidos || "";
+      document.getElementById("f-usuario").value = c.usuario || "";
+      document.getElementById("f-correo").value = c.correo || "";
+      document.getElementById("f-clave").value = "";
+      document.getElementById("label-clave").textContent = "Nueva contraseña (vacío = no cambiar)";
+      document.getElementById("sa-modal").classList.remove("hidden");
+      document.getElementById("sa-modal").classList.add("flex");
+    }
+
+    function cerrarModal() {
+      document.getElementById("sa-modal").classList.add("hidden");
+      document.getElementById("sa-modal").classList.remove("flex");
+      editingId = null;
+      editingTipo = null;
+      document.getElementById("label-clave").textContent = "Contraseña";
+    }
+
+    async function toggleCred(id, tipo) {
+      if (!currentSlug) return;
+      try {
+        await saApi(`/superadmin/restaurantes/${currentSlug}/credenciales/${id}/${tipo}/toggle`, {
+          method: "PATCH"
+        });
+        cargarCredenciales();
+      } catch (err) { alert(err.message); }
+    }
+
+    async function eliminarCred(id, tipo, nombre) {
+      if (!currentSlug) return;
+      if (!confirm(`¿Eliminar permanentemente a "${nombre}"? Esta acción no se puede deshacer.`)) return;
+      try {
+        await saApi(`/superadmin/restaurantes/${currentSlug}/credenciales/${id}/${tipo}`, {
+          method: "DELETE"
+        });
+        cargarCredenciales();
+      } catch (err) { alert(err.message); }
+    }
+
+    document.getElementById("sa-form-cred").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentSlug) { alert("Selecciona un restaurante"); return; }
+      const body = {
+        tipo: document.getElementById("f-tipo").value,
+        nombre: document.getElementById("f-nom").value.trim(),
+        apellidos: document.getElementById("f-apell").value.trim(),
+        usuario: document.getElementById("f-usuario").value.trim(),
+        correo: document.getElementById("f-correo").value.trim(),
+        clave: document.getElementById("f-clave").value,
+      };
+      if (editingId) {
+        body.rol = body.tipo;
+      }
+      if (!body.usuario) { alert("El usuario es requerido"); return; }
+      if (!editingId && !body.clave) { alert("La contraseña es requerida"); return; }
+      try {
+        if (editingId) {
+          await saApi(`/superadmin/restaurantes/${currentSlug}/credenciales/${editingId}/${editingTipo}`, {
+            method: "PATCH", body: JSON.stringify(body),
+          });
+        } else {
+          await saApi(`/superadmin/restaurantes/${currentSlug}/credenciales`, {
+            method: "POST", body: JSON.stringify(body),
+          });
+        }
+        cerrarModal();
+        cargarCredenciales();
+      } catch (err) { alert(err.message); }
+    });
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      if (!saProteger()) return;
+      try {
+        const { data } = await saApi("/superadmin/restaurantes");
+        const sel = document.getElementById("sa-rest-select");
+        sel.innerHTML = '<option value="">Seleccionar restaurante...</option>';
+        data.forEach(r => {
+          const op = document.createElement("option");
+          op.value = r.slug;
+          op.textContent = `${r.nombre} (${r.slug})`;
+          sel.appendChild(op);
+        });
+        const params = new URLSearchParams(window.location.search);
+        const preselect = params.get("slug");
+        if (preselect) { sel.value = preselect; cargarCredenciales(); }
+      } catch (err) { console.error(err); }
+    });
+  </script>
+  <style>
+    .sa-tab {
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #64748b;
+      transition: all 0.2s;
+    }
+    .sa-tab:hover { background: #f1f5f9; }
+    .sa-tab.active { background: #ede9fe; color: #6d28d9; }
+  </style>
+</body>
+</html>

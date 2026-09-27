@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Tomar pedido</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+<body class="min-h-screen bg-[#f7f3ec] text-slate-900">
+
+  <nav class="mg-nav waiter-nav">
+    <div class="mg-nav-inner">
+      <a href="mesas.html" class="mg-nav-brand">
+        <img src="../img/Log.png" alt="Logo" class="mg-nav-logo-img" data-logo />
+        <span class="waiter-brand-copy"><span class="mg-nav-title">MenuGo</span><small>Sala & servicio</small></span>
+      </a>
+
+      <div class="mg-nav-links">
+        <a href="mesas.html" class="mg-nav-link"><i class="bi bi-grid-3x3-gap"></i><span>Mesas</span></a>
+        <a href="tomar_pedido.html" class="mg-nav-link active"><i class="bi bi-cart-plus"></i><span>Tomar pedido</span></a>
+        <a href="pedidos.html?vista=listos" class="mg-nav-link"><i class="bi bi-bell"></i><span>Entregas</span></a>
+        <a href="pedidos.html?vista=local" class="mg-nav-link"><i class="bi bi-receipt-cutoff"></i><span>Cuentas</span></a>
+        <a href="unir_mesas.html" class="mg-nav-link"><i class="bi bi-arrow-left-right"></i><span>Unir mesas</span></a>
+        <a href="pago_cruzado.html" class="mg-nav-link"><i class="bi bi-currency-exchange"></i><span>Pago cruzado</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="waiter-shell pb-32 lg:pb-8">
+
+    <header class="waiter-order-hero">
+      <div class="waiter-order-hero-copy"><p class="waiter-eyebrow"><i class="bi bi-pencil-square"></i> Comanda digital</p><h1>¿Qué servimos hoy?</h1><p>Elige la mesa, personaliza cada plato y envía la comanda a cocina en segundos.</p><div class="waiter-live-pill"><span></span> Cocina conectada</div></div>
+      <div class="waiter-order-visual" aria-hidden="true"><span class="waiter-orbit orbit-one"><i class="bi bi-cup-hot"></i></span><span class="waiter-orbit orbit-two"><i class="bi bi-receipt"></i></span><div class="waiter-dish"><i class="bi bi-egg-fried"></i></div></div>
+    </header>
+
+    <section class="waiter-order-head">
+      <div class="waiter-order-table"><i class="bi bi-grid-3x3-gap"></i><div class="waiter-table-picker"><label>Atendiendo</label><select id="mesa-select" class="sr-only" onchange="cambiarMesaPedido()"></select><button id="mesa-picker-button" type="button" aria-expanded="false" onclick="toggleMesaPicker()"><span>Mesa 1</span><i class="bi bi-chevron-down"></i></button><div id="mesa-picker-menu" class="waiter-picker-menu hidden"></div></div></div>
+      <div class="waiter-order-note"><strong>Pedido registrado por mesero</strong><span>Llegará a cocina con el mismo seguimiento que un pedido desde QR.</span></div>
+      <div class="waiter-flow"><span><b>1</b>Mesa</span><span><b>2</b>Platos</span><span><b>3</b>Cocina</span></div>
+    </section>
+
+    <section class="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
+      <div class="space-y-4">
+
+        <section class="hidden">
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-[220px_minmax(0,1fr)] md:items-end">
+            <div>
+              <label for="mesa-select" class="mg-label">Número de mesa</label>
+              <select aria-hidden="true"></select>
+            </div>
+            <div class="rounded-2xl bg-slate-50 p-4">
+              <p class="text-sm font-bold text-slate-600">Este pedido se registrará como <span class="font-black text-slate-950">origen: Mesero</span> y llegará a cocina igual que un pedido por QR.</p>
+              <p class="mt-1 text-xs font-semibold text-slate-500">Útil para clientes sin celular, sin batería o que prefieren atención tradicional.</p>
+            </div>
+          </div>
+        </section>
+
+        <nav class="waiter-categories" data-nav-shrink>
+          <div class="waiter-category-leading"><i class="bi bi-stars"></i><span>Explorar<br><b>carta</b></span></div><div id="categorias-container" class="flex gap-2 overflow-x-auto pb-1"></div>
+        </nav>
+
+        <section>
+          <div class="mg-section-header">
+            <h2 id="titulo-categoria" class="mg-section-title">Todos los platos</h2>
+          </div>
+          <div id="platos-container" class="grid grid-cols-1 gap-4 xl:grid-cols-2"></div>
+        </section>
+      </div>
+
+      <aside id="panel-pedido" class="waiter-cart fixed bottom-20 left-4 right-4 z-40 hidden max-h-[72vh] flex-col rounded-3xl p-4 shadow-2xl lg:sticky lg:top-5 lg:left-auto lg:right-auto lg:z-auto lg:flex lg:max-h-[calc(100vh-40px)]">
+        <div class="mb-3 flex items-start justify-between gap-3">
+          <div>
+            <p class="text-xs font-black uppercase tracking-wide text-orange-400">Comanda actual</p>
+            <h2 class="text-xl font-black">Mesa <span id="mesa-panel">-</span></h2>
+            <p class="text-sm">Se ampliará al agregar productos.</p>
+          </div>
+          <button type="button" onclick="togglePedidoTemporal()" class="mg-btn-ghost lg:hidden">
+            Cerrar
+          </button>
+        </div>
+
+        <div id="lista-pedido-temporal" class="max-h-[52vh] overflow-y-auto pr-1"></div>
+
+        <div class="waiter-cart-total mt-4 border-t pt-4">
+          <div class="flex items-center justify-between text-xl font-black text-slate-950">
+            <span>Total</span>
+            <span>S/ <span id="total-pedido-temporal">0.00</span></span>
+          </div>
+          <div class="mt-3 grid grid-cols-1 gap-2">
+            <button type="button" onclick="confirmarPedidoMesero()" class="mg-btn mg-btn-primary w-full">
+              <i class="bi bi-send-check"></i> Enviar pedido a cocina
+            </button>
+            <button type="button" onclick="vaciarPedidoTemporal()" class="mg-btn mg-btn-danger w-full">
+              <i class="bi bi-trash3"></i> Vaciar pedido
+            </button>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <button id="boton-pedido-mobile" type="button" onclick="togglePedidoTemporal()" class="fixed bottom-4 left-4 right-4 z-40 rounded-2xl bg-slate-950 px-4 py-4 text-center text-sm font-black text-white shadow-2xl shadow-slate-900/30 lg:hidden">
+    <i class="bi bi-bag-check me-2"></i>Pedido temporal · S/ <span id="total-pedido-mobile">0.00</span>
+  </button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const session = JSON.parse(localStorage.getItem('session') || '{}');
+      const nameEl = document.getElementById('nav-mesero-name');
+      if (session.nombre || session.name) {
+        nameEl.textContent = session.nombre || session.name;
+      }
+    });
+  </script>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/splash.js"></script>
+  <script src="../js/animaciones.js" defer></script>
+  <script src="../js/personal-auth.js"></script>
+  <script src="../js/platos.js"></script>
+  <script src="../js/tomar-pedido.js"></script>
+</body>
+</html>

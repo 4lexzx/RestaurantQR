@@ -1,0 +1,65 @@
+MENUGO - CREDENCIALES DE PRUEBA LOCAL
+====================================
+
+MenuGo atiende UN SOLO restaurante. No hay tenants, ni panel SuperAdmin,
+ ni selector de restaurante: todas las cuentas son del mismo local.
+
+Estas cuentas son exclusivamente para desarrollo y testing local.
+Cambiar o eliminar todas las contraseñas antes de publicar el sistema en producción.
+Este archivo no contiene credenciales de PostgreSQL, tokens ni secretos del servidor.
+
+Servidor local: http://localhost:4000
+
+1. Cliente (QR / para llevar) — sin login
+------------------------------------------
+Carta por mesa:      http://localhost:4000/Cliente/menu.html?mesa=1
+Para llevar:         http://localhost:4000/Cliente/para_llevar.html
+Entrada con mesa:    http://localhost:4000/Cliente/mesa/1
+(Los QR se generan y listan en el panel Mesero con GET /api/mesas/qr-urls,
+ que devuelve numero_mesa, qr_token, qr_activo y url_qr ya listos para imprimir.
+ Mesa 1 de ejemplo:
+   qr_token = MG-MESA-01-9F5BA8CB417B
+   url_qr   = http://localhost:4000/Cliente/mesa/1?token=MG-MESA-01-9F5BA8CB417B)
+
+2. Admin
+--------
+Login:               http://localhost:4000/Admin/login.html
+Usuario o correo:    admin@menugo.local
+Contraseña:          MenuGoDemo#2026
+
+Panel:               http://localhost:4000/Admin/dashboard.html
+Productos:           http://localhost:4000/Admin/productos.html
+Trabajadores:        http://localhost:4000/Admin/trabajadores.html
+Configuración:       http://localhost:4000/Admin/configuracion.html
+
+3. Mesero
+---------
+Login:               http://localhost:4000/Mesero/login.html
+Usuario o correo:    mesero@menugo.local
+Contraseña:          MeseroMenuGo#2026
+
+Mesas:               http://localhost:4000/Mesero/mesas.html
+Pedidos:             http://localhost:4000/Mesero/pedidos.html
+Tomar pedido:        http://localhost:4000/Mesero/tomar_pedido.html
+Unir mesas:          http://localhost:4000/Mesero/unir_mesas.html
+Cobrar / pago:       http://localhost:4000/Mesero/pago_cruzado.html
+
+4. Cocina
+---------
+Login:               http://localhost:4000/Cocina/login.html
+Usuario o correo:    cocina@menugo.local
+Contraseña:          CocinaMenuGo#2026
+
+Pedidos:             http://localhost:4000/Cocina/pedidos.html
+
+Notas
+-----
+- El Admin accede con los campos `usuario` y `clave` (endpoint POST /api/auth/login).
+  Mesero y Cocina usan `usuario`, `clave` y `rol` (POST /api/admin/personal/login).
+- Las rutas /r/menugo/... se mantienen solo como alias de compatibilidad.
+  No usarás esos enlaces: entra siempre por http://localhost:4000/<Panel>/...
+- Para regenerar los QR: el backend los crea y conserva solo al arrancar
+  (backend/src/config/qrMesas.js, formato MG-MESA-<n>-<hex>) y cada vez que se
+  cambia num_mesas en Configuracion. Son idempotentes: si qr_token ya existe se
+  respeta. Para forzar uno nuevo: UPDATE mesas SET qr_token = NULL WHERE
+  numero_mesa = <n>; y reiniciar el servidor. No se editan a mano.

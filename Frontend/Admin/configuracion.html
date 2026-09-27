@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Configuración</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+
+<body class="admin-page admin-config-page min-h-screen text-slate-900">
+  <!-- Nav -->
+  <nav class="mg-nav admin-nav">
+    <div class="mg-nav-inner">
+      <a href="dashboard.html" class="mg-nav-brand">
+        <img src="../img/Log.png" alt="Logo" class="mg-nav-logo-img" data-logo />
+        <span class="mg-nav-title" data-tenant-name>Restaurante</span>
+      </a>
+      <div class="mg-nav-links">
+        <a href="dashboard.html" class="mg-nav-link"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+        <a href="productos.html" class="mg-nav-link"><i class="bi bi-book me-1"></i>Menú</a>
+        <a href="trabajadores.html" class="mg-nav-link"><i class="bi bi-people me-1"></i>Personal</a>
+        <a href="configuracion.html" class="mg-nav-link active"><i class="bi bi-gear me-1"></i>Config</a>
+        <button onclick="cerrarSesionAdmin()" class="mg-nav-logout"><i class="bi bi-box-arrow-right"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="admin-shell admin-config-shell">
+    <header data-hero class="mg-hero admin-hero admin-config-hero">
+      <div class="mg-hero-row">
+        <div class="flex flex-col items-center gap-3 text-center md:flex-row md:text-left">
+          <img src="../img/Log.png" id="config-logo-preview" alt="Logo del restaurante" class="h-16 w-16" data-logo />
+          <div>
+            <p class="mg-hero-subtitle"><i class="bi bi-shield-lock me-1"></i> Espacio aislado por restaurante</p>
+            <h1 class="mg-hero-title" id="config-titulo">Centro de marca</h1>
+            <p class="mg-hero-desc">Una identidad, aplicada en Admin, Cocina, Mesero y Cliente.</p>
+          </div>
+        </div>
+        <div class="admin-config-scope">
+          <i class="bi bi-buildings"></i><span><strong>Solo este restaurante</strong><small>Datos y apariencia independientes</small></span>
+        </div>
+      </div>
+      <div class="mt-5 flex flex-wrap items-end gap-3" id="config-restaurante-bar" style="display:none">
+        <div class="flex-1 min-w-[220px]">
+          <label class="mb-1 block text-xs font-black uppercase tracking-wide text-white/70">Restaurante</label>
+          <select id="config-select-restaurante" class="w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm font-black text-white outline-none"></select>
+        </div>
+        <button type="button" onclick="cargarConfiguracion()" class="mg-btn mg-btn-secondary">
+          <i class="bi bi-arrow-clockwise me-1"></i>Recargar
+        </button>
+      </div>
+    </header>
+
+    <div id="config-alerta" class="mb-5 hidden rounded-2xl px-4 py-3 text-sm font-bold"></div>
+
+    <form id="config-form" class="admin-config-layout">
+
+      <!-- Identidad + Logo -->
+      <section class="config-section admin-config-card admin-config-span">
+        <h2 class="config-section-title">
+          <span class="config-section-icon"><i class="bi bi-shop"></i></span>
+          Identidad
+        </h2>
+        <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div>
+            <label for="f-nombre" class="config-label">Nombre del restaurante</label>
+            <input id="f-nombre" type="text" class="config-input" placeholder="Mi restaurante" />
+          </div>
+          <div>
+            <label for="f-slogan" class="config-label">Eslogan</label>
+            <input id="f-slogan" type="text" class="config-input" placeholder="La mejor comida de la ciudad" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="config-label">Logo del restaurante</label>
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+              <!-- Dropzone -->
+              <div id="config-upload-zone" class="config-upload-zone flex-1" tabindex="0" role="button" aria-label="Subir logo">
+                <input id="f-logo" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" />
+                <div id="config-upload-placeholder" class="config-upload-content">
+                  <div class="config-upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+                  <p class="config-upload-text">Arrastra tu logo aquí</p>
+                  <p class="config-upload-hint">o haz clic para seleccionar · PNG, JPG, WebP</p>
+                </div>
+                <div id="config-upload-preview" class="config-upload-preview hidden">
+                  <img id="config-upload-img" src="" alt="Logo seleccionado" />
+                  <div class="config-upload-overlay">
+                    <i class="bi bi-pencil-square"></i> Cambiar
+                  </div>
+                </div>
+              </div>
+              <!-- Thumbnail + quitar -->
+              <div id="config-logo-thumb-wrap" class="hidden flex flex-col items-center gap-2">
+                <div class="config-logo-thumb">
+                  <img id="config-logo-thumb" src="" alt="Logo actual" />
+                </div>
+                <button type="button" onclick="quitarLogo()" class="config-btn-text text-rose-600 hover:text-rose-700">
+                  <i class="bi bi-trash3 me-1"></i>Quitar logo
+                </button>
+              </div>
+            </div>
+            <p class="mt-2 config-hint">Aparece en el encabezado del menú y en los códigos QR de las mesas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Colores + Vista Previa -->
+      <section class="config-section admin-config-card admin-config-span admin-config-brand">
+        <h2 class="config-section-title">
+          <span class="config-section-icon"><i class="bi bi-palette"></i></span>
+          Colores de marca
+        </h2>
+        <div class="mt-4">
+          <!-- Pickers -->
+          <div class="space-y-5">
+            <div>
+              <label class="config-label">Color primario</label>
+              <div class="flex items-center gap-4">
+                <div class="config-color-swatch" id="config-swatch-pm" tabindex="0" role="button" aria-label="Elegir color primario">
+                  <input id="f-color-primario" type="color" class="hidden" />
+                  <div id="config-swatch-fill-pm" class="config-color-fill"></div>
+                  <div class="config-color-ring"></div>
+                </div>
+                <div class="flex-1">
+                  <input id="f-color-primario-hex" type="text" class="config-input font-mono uppercase" placeholder="#2563EB" maxlength="7" />
+                  <p class="mt-1 config-hint">Botones activos, indicadores y acentos</p>
+                </div>
+              </div>
+              <div class="config-palette" id="config-palette-pm">
+                <button type="button" class="config-palette-dot" data-color="#2563EB" style="background:#2563EB" title="Azul"></button>
+                <button type="button" class="config-palette-dot" data-color="#7C3AED" style="background:#7C3AED" title="Violeta"></button>
+                <button type="button" class="config-palette-dot" data-color="#059669" style="background:#059669" title="Verde"></button>
+                <button type="button" class="config-palette-dot" data-color="#DC2626" style="background:#DC2626" title="Rojo"></button>
+                <button type="button" class="config-palette-dot" data-color="#D97706" style="background:#D97706" title="Ámbar"></button>
+                <button type="button" class="config-palette-dot" data-color="#0891B2" style="background:#0891B2" title="Cyan"></button>
+                <button type="button" class="config-palette-dot" data-color="#DB2777" style="background:#DB2777" title="Rosa"></button>
+                <button type="button" class="config-palette-dot" data-color="#4F46E5" style="background:#4F46E5" title="Índigo"></button>
+                <button type="button" class="config-palette-dot" data-color="#0D9488" style="background:#0D9488" title="Teal"></button>
+                <button type="button" class="config-palette-dot" data-color="#EA580C" style="background:#EA580C" title="Naranja"></button>
+              </div>
+            </div>
+            <div>
+              <label class="config-label">Color secundario</label>
+              <div class="flex items-center gap-4">
+                <div class="config-color-swatch" id="config-swatch-sc" tabindex="0" role="button" aria-label="Elegir color secundario">
+                  <input id="f-color-secundario" type="color" class="hidden" />
+                  <div id="config-swatch-fill-sc" class="config-color-fill"></div>
+                  <div class="config-color-ring"></div>
+                </div>
+                <div class="flex-1">
+                  <input id="f-color-secundario-hex" type="text" class="config-input font-mono uppercase" placeholder="#0F172A" maxlength="7" />
+                  <p class="mt-1 config-hint">Fondo del encabezado principal</p>
+                </div>
+              </div>
+              <div class="config-palette" id="config-palette-sc">
+                <button type="button" class="config-palette-dot" data-color="#0F172A" style="background:#0F172A" title="Slate"></button>
+                <button type="button" class="config-palette-dot" data-color="#1E293B" style="background:#1E293B" title="Slate 800"></button>
+                <button type="button" class="config-palette-dot" data-color="#111827" style="background:#111827" title="Gray 900"></button>
+                <button type="button" class="config-palette-dot" data-color="#1E3A5F" style="background:#1E3A5F" title="Azul oscuro"></button>
+                <button type="button" class="config-palette-dot" data-color="#3B0764" style="background:#3B0764" title="Violeta oscuro"></button>
+                <button type="button" class="config-palette-dot" data-color="#064E3B" style="background:#064E3B" title="Verde oscuro"></button>
+                <button type="button" class="config-palette-dot" data-color="#7C2D12" style="background:#7C2D12" title="Naranja oscuro"></button>
+                <button type="button" class="config-palette-dot" data-color="#164E63" style="background:#164E63" title="Cyan oscuro"></button>
+                <button type="button" class="config-palette-dot" data-color="#831843" style="background:#831843" title="Rosa oscuro"></button>
+                <button type="button" class="config-palette-dot" data-color="#0C0C0C" style="background:#0C0C0C" title="Negro"></button>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" onclick="vistaPrevia()" class="config-btn-primary">
+                <i class="bi bi-eye me-1"></i>Aplicar vista previa
+              </button>
+              <button type="button" onclick="resetColores()" class="config-btn-outline">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Restablecer
+              </button>
+            </div>
+          </div>
+          <div class="config-color-scope">
+            <div><span class="config-scope-swatch config-scope-accent"></span><p><strong>Color de acento</strong><small>Acciones seleccionadas, estados y detalles.</small></p></div>
+            <div><span class="config-scope-swatch config-scope-hero"></span><p><strong>Color del encabezado</strong><small>El rectángulo principal de cada panel.</small></p></div>
+            <p class="config-scope-note"><i class="bi bi-info-circle"></i> Las tarjetas y formularios permanecen blancos para conservar claridad y legibilidad.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Datos de venta -->
+      <section class="config-section admin-config-card">
+        <h2 class="config-section-title">
+          <span class="config-section-icon"><i class="bi bi-receipt"></i></span>
+          Datos de venta
+        </h2>
+        <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div>
+            <label for="f-moneda" class="config-label">Símbolo de moneda</label>
+            <input id="f-moneda" type="text" maxlength="8" class="config-input" placeholder="S/" />
+          </div>
+          <div>
+            <label for="f-igv" class="config-label">IGV (%)</label>
+            <input id="f-igv" type="number" step="0.01" min="0" max="100" class="config-input" placeholder="18" />
+          </div>
+          <div>
+            <label for="f-serie" class="config-label">Serie de boleta</label>
+            <input id="f-serie" type="text" maxlength="4" class="config-input" placeholder="B001" />
+          </div>
+          <div>
+            <label for="f-ruc" class="config-label">RUC</label>
+            <input id="f-ruc" type="text" maxlength="11" class="config-input" placeholder="20512345678" />
+          </div>
+          <div>
+            <label for="f-telefono" class="config-label">Teléfono</label>
+            <input id="f-telefono" type="text" class="config-input" placeholder="999 888 777" />
+          </div>
+          <div>
+            <label for="f-direccion" class="config-label">Dirección</label>
+            <input id="f-direccion" type="text" class="config-input" placeholder="Av. Principal 123" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Mesas y activación -->
+      <section class="config-section admin-config-card">
+        <h2 class="config-section-title">
+          <span class="config-section-icon"><i class="bi bi-qr-code"></i></span>
+          Mesas y activación
+        </h2>
+        <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end">
+          <div class="flex-1">
+            <label for="f-num-mesas" class="config-label">Número de mesas</label>
+            <input id="f-num-mesas" type="number" min="1" max="300" class="config-input" placeholder="20" />
+            <p class="mt-1 config-hint">Al aumentar se crean las mesas y sus QRs automáticamente.</p>
+          </div>
+          <label class="config-toggle">
+            <input id="f-activo" type="checkbox" class="config-toggle-input" checked />
+            <span class="config-toggle-track"></span>
+            <span class="config-toggle-label">Restaurante activo</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Botones -->
+      <div class="admin-config-savebar admin-config-span">
+        <button type="submit" class="config-btn-primary flex-1 py-4 text-base">
+          <i class="bi bi-check-lg me-1"></i>Guardar configuración
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/splash.js"></script>
+  <script src="../js/animaciones.js" defer></script>
+  <script src="../js/admin-auth.js"></script>
+  <script src="../js/admin-config.js"></script>
+</body>
+
+</html>

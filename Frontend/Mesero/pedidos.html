@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Pedidos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+
+<body class="min-h-screen bg-[#f7f3ec] text-slate-900">
+
+  <nav class="mg-nav waiter-nav">
+    <div class="mg-nav-inner">
+      <a href="mesas.html" class="mg-nav-brand">
+        <img src="../img/Log.png" alt="Logo" class="mg-nav-logo-img" data-logo />
+        <span class="waiter-brand-copy"><span class="mg-nav-title">MenuGo</span><small>Sala & servicio</small></span>
+      </a>
+      <div class="mg-nav-links">
+        <a href="mesas.html" class="mg-nav-link"><i class="bi bi-grid-3x3-gap"></i><span>Mesas</span></a>
+        <a href="tomar_pedido.html" class="mg-nav-link"><i class="bi bi-cart-plus"></i><span>Tomar pedido</span></a>
+        <a href="pedidos.html?vista=listos" class="mg-nav-link"><i class="bi bi-bell"></i><span>Entregas</span></a>
+        <a href="pedidos.html?vista=local" class="mg-nav-link"><i class="bi bi-receipt-cutoff"></i><span>Cuentas</span></a>
+        <a href="unir_mesas.html" class="mg-nav-link"><i class="bi bi-arrow-left-right"></i><span>Unir mesas</span></a>
+        <a href="pago_cruzado.html" class="mg-nav-link"><i class="bi bi-currency-exchange"></i><span>Pago cruzado</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="waiter-shell">
+
+    <header class="waiter-page-head waiter-section-head">
+        <div>
+          <p id="mesero-page-eyebrow" class="waiter-eyebrow"><i class="bi bi-receipt-cutoff"></i> Control de cuentas</p>
+          <h1 id="mesero-page-title" class="waiter-page-title">Cuentas</h1>
+          <p id="mesero-page-desc" class="waiter-page-desc">Consulta cuentas pendientes, registra pagos y revisa el historial de cobros.</p>
+        </div>
+        <div class="waiter-section-visual visual-accounts" aria-hidden="true"><div class="visual-core"><i class="bi bi-receipt-cutoff"></i></div><span class="visual-satellite satellite-a"><i class="bi bi-check2-circle"></i></span><span class="visual-satellite satellite-b"><i class="bi bi-cash-stack"></i></span></div>
+    </header>
+
+    <section id="mesero-stats" class="mg-stats mesero-context-stats">
+      <article class="mg-card" data-stat-context="cuentas">
+        <p class="mg-stat-label">Cuentas activas</p>
+        <p id="stat-cuentas" class="mg-stat-value">0</p>
+      </article>
+      <article class="mg-card" data-stat-context="cuentas">
+        <p class="mg-stat-label">Pendientes de pago</p>
+        <p id="stat-pendientes" class="mg-stat-value" style="color: var(--mg-p600)">0</p>
+      </article>
+      <article class="mg-card" data-stat-context="entregas">
+        <p class="mg-stat-label">Listos para mesa</p>
+        <p id="stat-listos" class="mg-stat-value" style="color: #16a34a">0</p>
+      </article>
+      <article class="mg-card" data-stat-context="entregas">
+        <p class="mg-stat-label">Listos para recoger</p>
+        <p id="stat-llevar" class="mg-stat-value" style="color: #2563eb">0</p>
+      </article>
+      <article class="mg-card" data-stat-context="cuentas">
+        <p class="mg-stat-label">Monto por cobrar</p>
+        <p class="mg-stat-value">S/ <span id="stat-total">0.00</span></p>
+      </article>
+    </section>
+
+    <nav id="mesero-view-nav" class="mg-card mb-5">
+      <div class="mg-filter-bar">
+        <button type="button" data-section="cuentas" data-vista="local" onclick="cambiarVistaMesero('local')"
+          class="mg-filter-btn active vista-mesero">
+          <i class="bi bi-receipt"></i> Cuentas pendientes
+        </button>
+        <button type="button" data-section="cuentas" data-vista="cuentas-historial" onclick="cambiarVistaMesero('cuentas-historial')"
+          class="mg-filter-btn vista-mesero">
+          <i class="bi bi-clock-history"></i> Historial de cuentas
+        </button>
+        <button type="button" data-section="entregas" data-vista="listos" onclick="cambiarVistaMesero('listos')"
+          class="mg-filter-btn vista-mesero">
+          <i class="bi bi-check-circle"></i> Listos para mesa
+        </button>
+        <button type="button" data-section="entregas" data-vista="llevar" onclick="cambiarVistaMesero('llevar')"
+          class="mg-filter-btn vista-mesero">
+          <i class="bi bi-bag"></i> Listos para recoger
+        </button>
+        <button type="button" data-section="entregas" data-vista="cerradas" onclick="cambiarVistaMesero('cerradas')"
+          class="mg-filter-btn vista-mesero">
+          <i class="bi bi-clock-history"></i> Historial de pedidos
+        </button>
+      </div>
+    </nav>
+
+    <section id="contenedor-mesero" class="grid grid-cols-1 gap-5 xl:grid-cols-2"></section>
+  </main>
+
+  <section id="panel-gestion" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-950/70 p-4 backdrop-blur-sm">
+    <div class="mx-auto my-4 w-full max-w-6xl rounded-[28px] bg-white shadow-2xl shadow-slate-950/30">
+      <div id="contenido-gestion"></div>
+    </div>
+  </section>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/splash.js"></script>
+  <script src="../js/animaciones.js" defer></script>
+  <script src="../js/tiempo-real.js"></script>
+  <script src="../js/personal-auth.js"></script>
+  <script src="../js/mesero.js"></script>
+  <script src="../js/admin-selects.js"></script>
+  <script>
+    (function () {
+      var session = JSON.parse(localStorage.getItem('menugo_sesion') || 'null');
+      if (session && session.nombre) {
+        var el = document.getElementById('nav-mesero-name');
+        if (el) el.textContent = session.nombre;
+      }
+    })();
+  </script>
+</body>
+
+</html>

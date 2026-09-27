@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Pago cruzado</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+
+<body>
+  <nav class="mg-nav waiter-nav">
+    <div class="mg-nav-inner">
+      <a href="mesas.html" class="mg-nav-brand">
+        <img src="../img/Log.png" alt="Logo" class="mg-nav-logo-img" data-logo />
+        <span class="waiter-brand-copy"><span class="mg-nav-title">MenuGo</span><small>Sala & servicio</small></span>
+      </a>
+      <div class="mg-nav-links">
+        <a href="mesas.html" class="mg-nav-link"><i class="bi bi-grid-3x3-gap"></i><span>Mesas</span></a>
+        <a href="tomar_pedido.html" class="mg-nav-link"><i class="bi bi-cart-plus"></i><span>Tomar pedido</span></a>
+        <a href="pedidos.html?vista=listos" class="mg-nav-link"><i class="bi bi-bell"></i><span>Entregas</span></a>
+        <a href="pedidos.html?vista=local" class="mg-nav-link"><i class="bi bi-receipt-cutoff"></i><span>Cuentas</span></a>
+        <a href="unir_mesas.html" class="mg-nav-link"><i class="bi bi-arrow-left-right"></i><span>Unir mesas</span></a>
+        <a href="pago_cruzado.html" class="mg-nav-link active"><i class="bi bi-currency-exchange"></i><span>Pago cruzado</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="waiter-shell">
+    <header class="waiter-page-head waiter-section-head">
+        <div><p class="waiter-eyebrow"><i class="bi bi-arrow-left-right"></i> Cobro flexible</p><h1 class="waiter-page-title">Pago entre mesas</h1><p class="waiter-page-desc">
+            Registra cuando una mesa paga toda o parte de la cuenta de otra mesa. Puedes seleccionar platos
+            específicos, usar distintos métodos y emitir boleta o factura.
+          </p></div><div class="waiter-section-visual visual-payment" aria-hidden="true"><div class="visual-core"><i class="bi bi-currency-exchange"></i></div><span class="visual-satellite satellite-a"><i class="bi bi-credit-card"></i></span><span class="visual-satellite satellite-b"><b>S/</b></span></div>
+    </header>
+
+    <section class="waiter-crosspay-stats">
+      <article class="waiter-metric">
+        <div class="mg-stat-icon" style="background: var(--mg-p100, #dbeafe); color: var(--mg-p600, #2563eb)">
+          <i class="bi bi-receipt-cutoff"></i>
+        </div>
+        <p class="mg-stat-value" id="stat-cuentas-cruzadas">0</p>
+        <p class="mg-stat-label">Cuentas activas</p>
+      </article>
+      <article class="waiter-metric">
+        <div class="mg-stat-icon" style="background: #fef3c7; color: #d97706">
+          <i class="bi bi-cash-stack"></i>
+        </div>
+        <p class="mg-stat-value">S/ <span id="stat-pendiente-cruzado">0.00</span></p>
+        <p class="mg-stat-label">Pendiente total</p>
+      </article>
+      <article class="waiter-metric">
+        <div class="mg-stat-icon" style="background: #dcfce7; color: #16a34a">
+          <i class="bi bi-check-circle"></i>
+        </div>
+        <p class="mg-stat-value" id="stat-pagos-cruzados" style="color: #16a34a">0</p>
+        <p class="mg-stat-label">Pagos cruzados</p>
+      </article>
+    </section>
+
+    <section class="waiter-crosspay-layout">
+      <aside class="space-y-5">
+        <form class="waiter-panel waiter-panel-pad" onsubmit="registrarPagoCruzado(event)">
+          <div class="crosspay-progress"><span class="active"><b>1</b>Mesas</span><i></i><span><b>2</b>Platos</span><i></i><span><b>3</b>Pago</span></div>
+          <div class="mb-5">
+            <p class="mg-label" style="color: var(--mg-p600, #2563eb); letter-spacing: 0.08em"><i class="bi bi-pencil-square"></i> Registrar pago</p>
+            <h2 class="mg-card-title">Define el traslado del pago</h2>
+            <p class="mg-card-subtitle">Primero indica quién paga y qué cuenta recibirá el abono.</p>
+          </div>
+
+          <div class="waiter-form-section"><div class="waiter-form-section-title"><b>1</b> Define las mesas</div><label class="block">
+            <span class="mg-label"><i class="bi bi-wallet2"></i> Pagador</span>
+            <select id="mesa-pagadora-cruzada" class="mg-input admin-select" onchange="actualizarRutaPagoCruzado()"></select>
+          </label>
+
+          <label class="mt-4 block">
+            <span class="mg-label"><i class="bi bi-arrow-down-circle"></i> Cuenta que recibe el pago</span>
+            <select id="mesa-beneficiada-cruzada" onchange="renderItemsBeneficiada(); actualizarRutaPagoCruzado()" class="mg-input admin-select"></select>
+          </label><div id="resumen-ruta-cruzada" class="crosspay-route-summary"></div></div>
+
+          <div class="waiter-form-section"><div class="waiter-form-section-title"><b>2</b> Configura el cobro</div><label class="block">
+            <span class="mg-label">Método de pago</span>
+            <select id="metodo-pago-cruzado" onchange="actualizarCamposMetodoCruzado()" class="mg-input admin-select">
+              <option value="Efectivo">Efectivo</option>
+              <option value="Yape">Yape</option>
+              <option value="Tarjeta">Tarjeta</option>
+            </select>
+          </label>
+
+          <label class="mt-4 block">
+            <span class="mg-label">Comprobante</span>
+            <select id="comprobante-cruzado" onchange="actualizarCamposComprobanteCruzado()" class="mg-input admin-select">
+              <option value="Sin comprobante">Sin comprobante</option>
+              <option value="Boleta">Boleta</option>
+              <option value="Factura">Factura</option>
+            </select>
+          </label>
+
+          <div id="campos-comprobante-cruzado" class="mt-4 hidden rounded-2xl bg-white p-4">
+            <label class="block">
+              <span id="label-doc-cruzado" class="mg-label">DNI</span>
+              <input id="documento-cruzado" class="mg-input" placeholder="Documento" />
+            </label>
+            <label class="mt-3 block">
+              <span id="label-nombre-cruzado" class="mg-label">Nombre</span>
+              <input id="nombre-comprobante-cruzado" class="mg-input" placeholder="Nombre del cliente" />
+            </label>
+          </div></div>
+
+          <div class="mg-stat mt-5">
+            <p class="mg-stat-label">Total seleccionado</p>
+            <p class="mg-stat-value" style="font-size: 1.75rem">S/ <span id="total-cruzado">0.00</span></p>
+          </div>
+          <div id="simulacion-pago-cruzado" class="mt-4"></div>
+          <button id="btn-registrar-pago-cruzado" type="submit" class="mg-btn mg-btn-primary mt-5 w-full" disabled>
+            <i class="bi bi-check-lg"></i> Registrar pago cruzado
+          </button>
+          <p class="mg-hint mt-3">Para pagos mixtos, registra primero algunos platos con un
+            método y luego repite el proceso con otros platos.</p>
+        </form>
+      </aside>
+
+      <section class="space-y-5">
+        <div class="waiter-panel waiter-panel-pad">
+          <div class="mg-section-header">
+            <div>
+              <p class="mg-section-subtitle"><i class="bi bi-list-check"></i> Platos pendientes</p>
+              <h2 class="mg-section-title">Cuenta beneficiada</h2>
+            </div>
+            <div class="mg-filter-bar">
+              <button type="button" onclick="seleccionarItemsCruzados('todos')" class="mg-filter-btn active">
+                <i class="bi bi-check-all"></i> Seleccionar todo
+              </button>
+              <button type="button" onclick="seleccionarItemsCruzados('comida')" class="mg-filter-btn">
+                <i class="bi bi-cup-hot"></i> Solo comida
+              </button>
+              <button type="button" onclick="seleccionarItemsCruzados('bebida')" class="mg-filter-btn">
+                <i class="bi bi-cup"></i> Solo bebidas
+              </button>
+              <button type="button" onclick="seleccionarItemsCruzados('ninguno')" class="mg-filter-btn">
+                <i class="bi bi-x-lg"></i> Limpiar
+              </button>
+            </div>
+          </div>
+          <div id="items-beneficiada" class="mt-4 overflow-hidden rounded-3xl border border-slate-200"></div>
+        </div>
+
+        <div class="waiter-panel waiter-panel-pad">
+          <div class="mg-section-header">
+            <div>
+              <p class="mg-section-subtitle"><i class="bi bi-clock-history"></i> Historial</p>
+              <h2 class="mg-section-title">Pagos cruzados registrados</h2>
+            </div>
+            <p class="mg-hint">Sirve como auditoría para saber qué mesa pagó cada plato.</p>
+          </div>
+          <div id="historial-pagos-cruzados" class="mt-4 space-y-3"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/splash.js"></script>
+  <script src="../js/animaciones.js" defer></script>
+  <script src="../js/tiempo-real.js"></script>
+  <script src="../js/personal-auth.js"></script>
+  <script src="../js/pago-cruzado.js"></script>
+  <script src="../js/admin-selects.js"></script>
+
+  <script>
+    const session = JSON.parse(localStorage.getItem('session') || '{}');
+    const nameEl = document.getElementById('mesero-name');
+    if (session && session.nombre) {
+      nameEl.textContent = session.nombre;
+    }
+  </script>
+</body>
+
+</html>

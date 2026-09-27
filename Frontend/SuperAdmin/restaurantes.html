@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Restaurantes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+<body class="min-h-screen bg-[#f7f3ec]">
+  <nav class="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
+      <a href="dashboard.html" class="flex items-center gap-2">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-600 text-white text-sm font-black">SA</div>
+        <span class="text-lg font-black text-slate-900">SuperAdmin</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="restaurantes.html" class="rounded-xl bg-purple-50 px-3 py-2 text-sm font-bold text-purple-700">Restaurantes</a>
+        <a href="credenciales.html" class="rounded-xl px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100">Credenciales</a>
+        <button onclick="saCerrarSesion()" class="ml-2 rounded-xl bg-red-50 px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-100">
+          <i class="bi bi-box-arrow-right me-1"></i>Salir
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-7xl px-4 py-6 md:px-6">
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-black text-slate-900">Restaurantes</h1>
+        <p class="text-sm text-slate-500">Administra los restaurantes de la plataforma.</p>
+      </div>
+      <button onclick="abrirModal()" class="rounded-2xl bg-purple-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-purple-900/20 hover:bg-purple-700 transition-all">
+        <i class="bi bi-plus-lg me-1"></i>Nuevo restaurante
+      </button>
+    </div>
+
+    <div id="sa-rest-grid" class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <p class="text-sm text-slate-400 col-span-full">Cargando...</p>
+    </div>
+  </main>
+
+  <!-- Modal crear/editar -->
+  <div id="sa-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="mx-4 w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl">
+      <div class="mb-5 flex items-center justify-between">
+        <h3 class="text-lg font-black text-slate-900" id="modal-title">Nuevo restaurante</h3>
+        <button onclick="cerrarModal()" class="text-slate-400 hover:text-slate-600"><i class="bi bi-x-lg text-lg"></i></button>
+      </div>
+      <form id="sa-form-rest" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Nombre</label>
+            <input id="f-nombre" type="text" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="Mi Restaurante" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Slug</label>
+            <input id="f-slug" type="text" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="mi-restaurante" />
+          </div>
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-black uppercase text-slate-500">Eslogan</label>
+          <input id="f-slogan" type="text" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="Tu eslogan aquí" />
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Color primario</label>
+            <input id="f-color-pm" type="color" value="#7c3aed" class="h-10 w-full cursor-pointer rounded-xl border border-slate-200" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Color secundario</label>
+            <input id="f-color-sc" type="color" value="#0f172a" class="h-10 w-full cursor-pointer rounded-xl border border-slate-200" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-black uppercase text-slate-500">Mesas</label>
+            <input id="f-mesas" type="number" value="20" min="1" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold outline-none focus:border-purple-500" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal()" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+          <button type="submit" class="rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-black text-white hover:bg-purple-700">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/superadmin-auth.js"></script>
+  <script>
+    let editingSlug = null;
+
+    function abrirModal(rest = null) {
+      editingSlug = rest?.slug || null;
+      document.getElementById("modal-title").textContent = rest ? "Editar restaurante" : "Nuevo restaurante";
+      document.getElementById("f-nombre").value = rest?.nombre || "";
+      document.getElementById("f-slug").value = rest?.slug || "";
+      document.getElementById("f-slug").disabled = !!rest;
+      document.getElementById("f-slogan").value = rest?.slogan || "";
+      document.getElementById("f-color-pm").value = rest?.color_primario || "#7c3aed";
+      document.getElementById("f-color-sc").value = rest?.color_secundario || "#0f172a";
+      document.getElementById("f-mesas").value = rest?.config?.num_mesas || 20;
+      const m = document.getElementById("sa-modal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function cerrarModal() {
+      const m = document.getElementById("sa-modal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+      editingSlug = null;
+      document.getElementById("f-slug").disabled = false;
+    }
+
+    function renderCards(data) {
+      const grid = document.getElementById("sa-rest-grid");
+      if (!data.length) { grid.innerHTML = '<p class="text-sm text-slate-400 col-span-full text-center py-10">No hay restaurantes. Crea uno para comenzar.</p>'; return; }
+      grid.innerHTML = data.map(r => `
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-all">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl text-white text-sm font-black" style="background:${r.color_primario || '#7c3aed'}">
+                ${r.nombre.charAt(0)}
+              </div>
+              <div>
+                <p class="text-sm font-black text-slate-900">${r.nombre}</p>
+                <p class="text-xs text-slate-500">/${r.slug}</p>
+              </div>
+            </div>
+            <span class="rounded-lg px-2 py-1 text-xs font-bold ${r.activo ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">${r.activo ? 'Activo' : 'Inactivo'}</span>
+          </div>
+          <div class="mt-4 flex items-center gap-4 text-xs text-slate-500">
+            <span><i class="bi bi-shield-lock me-1"></i>${r.num_admins} admins</span>
+            <span><i class="bi bi-people me-1"></i>${r.num_trabajadores} trabajadores</span>
+            <span><i class="bi bi-book me-1"></i>${r.num_platos} platos</span>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <a href="credenciales.html?slug=${r.slug}" class="flex-1 rounded-xl bg-purple-50 py-2 text-center text-xs font-bold text-purple-700 hover:bg-purple-100 transition-all">
+              <i class="bi bi-key me-1"></i>Credenciales
+            </a>
+            <button onclick='abrirModal(${JSON.stringify(r).replace(/'/g, "&#39;")})' class="rounded-xl bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 transition-all">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button onclick="toggleActivo('${r.slug}', ${r.activo})" class="rounded-xl px-3 py-2 text-xs font-bold transition-all ${r.activo ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'}">
+              <i class="bi bi-${r.activo ? 'pause' : 'play'}"></i>
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function cargar() {
+      try {
+        const { data } = await saApi("/superadmin/restaurantes");
+        renderCards(data);
+      } catch (err) { console.error(err); }
+    }
+
+    async function toggleActivo(slug, actual) {
+      if (!confirm(actual ? `¿Desactivar ${slug}?` : `¿Activar ${slug}?`)) return;
+      try {
+        await saApi(`/superadmin/restaurantes/${slug}`, { method: "PATCH", body: JSON.stringify({ activo: !actual }) });
+        cargar();
+      } catch (err) { alert(err.message); }
+    }
+
+    document.getElementById("sa-form-rest").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const body = {
+        nombre: document.getElementById("f-nombre").value.trim(),
+        slug: document.getElementById("f-slug").value.trim(),
+        slogan: document.getElementById("f-slogan").value.trim(),
+        color_primario: document.getElementById("f-color-pm").value,
+        color_secundario: document.getElementById("f-color-sc").value,
+        num_mesas: Number(document.getElementById("f-mesas").value) || 20,
+      };
+      try {
+        if (editingSlug) {
+          await saApi(`/superadmin/restaurantes/${editingSlug}`, { method: "PATCH", body: JSON.stringify(body) });
+        } else {
+          await saApi("/superadmin/restaurantes", { method: "POST", body: JSON.stringify(body) });
+        }
+        cerrarModal();
+        cargar();
+      } catch (err) { alert(err.message); }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => { if (saProteger()) cargar(); });
+  </script>
+</body>
+</html>

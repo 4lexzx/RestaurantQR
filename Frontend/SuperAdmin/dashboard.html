@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | SuperAdmin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+<body class="min-h-screen bg-[#f7f3ec]">
+  <!-- Nav -->
+  <nav class="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
+      <a href="dashboard.html" class="flex items-center gap-2">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-600 text-white text-sm font-black">SA</div>
+        <span class="text-lg font-black text-slate-900">SuperAdmin</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="restaurantes.html" class="rounded-xl px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100">Restaurantes</a>
+        <a href="credenciales.html" class="rounded-xl px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100">Credenciales</a>
+        <span id="sa-nombre" class="ml-2 text-sm font-bold text-slate-500"></span>
+        <button onclick="saCerrarSesion()" class="ml-2 rounded-xl bg-red-50 px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-100">
+          <i class="bi bi-box-arrow-right me-1"></i>Salir
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-7xl px-4 py-6 md:px-6">
+    <!-- Header -->
+    <div class="mb-6 rounded-[28px] bg-gradient-to-br from-slate-950 to-purple-900 px-6 py-8 shadow-xl">
+      <h1 class="text-3xl font-black text-white">Dashboard</h1>
+      <p class="mt-1 text-sm font-medium text-white/70">Vista general de tu plataforma MenuGo.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+      <div class="sa-stat-card">
+        <div class="sa-stat-icon bg-purple-100 text-purple-600"><i class="bi bi-shop"></i></div>
+        <p class="sa-stat-value" id="s-rest">-</p>
+        <p class="sa-stat-label">Restaurantes</p>
+      </div>
+      <div class="sa-stat-card">
+        <div class="sa-stat-icon bg-blue-100 text-blue-600"><i class="bi bi-shield-lock"></i></div>
+        <p class="sa-stat-value" id="s-admins">-</p>
+        <p class="sa-stat-label">Admins</p>
+      </div>
+      <div class="sa-stat-card">
+        <div class="sa-stat-icon bg-emerald-100 text-emerald-600"><i class="bi bi-person-video2"></i></div>
+        <p class="sa-stat-value" id="s-meseros">-</p>
+        <p class="sa-stat-label">Meseros</p>
+      </div>
+      <div class="sa-stat-card">
+        <div class="sa-stat-icon bg-orange-100 text-orange-600"><i class="bi bi-fire"></i></div>
+        <p class="sa-stat-value" id="s-cocineros">-</p>
+        <p class="sa-stat-label">Cocineros</p>
+      </div>
+      <div class="sa-stat-card">
+        <div class="sa-stat-icon bg-rose-100 text-rose-600"><i class="bi bi-book"></i></div>
+        <p class="sa-stat-value" id="s-platos">-</p>
+        <p class="sa-stat-label">Platos totales</p>
+      </div>
+      <div class="sa-stat-card">
+        <div class="sa-stat-icon bg-amber-100 text-amber-600"><i class="bi bi-receipt"></i></div>
+        <p class="sa-stat-value" id="s-pedidos">-</p>
+        <p class="sa-stat-label">Pedidos hoy</p>
+      </div>
+    </div>
+
+    <!-- Platform intelligence -->
+    <section class="mb-6 grid grid-cols-1 gap-5 xl:grid-cols-[1.15fr_.85fr]">
+      <article class="sa-analytics-card">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p class="sa-kicker">Ecosistema MenuGo</p>
+            <h2 class="text-xl font-black text-slate-950">Usuarios operativos por rol</h2>
+            <p class="mt-1 text-sm font-semibold text-slate-500">Distribución de accesos activos en toda la plataforma.</p>
+          </div>
+          <span class="sa-live-badge"><span></span> Datos actuales</span>
+        </div>
+        <div id="sa-chart-roles" class="mt-4 min-h-[260px]"></div>
+      </article>
+      <article class="sa-analytics-card sa-analytics-dark">
+        <div>
+          <p class="sa-kicker text-purple-300">Actividad de hoy</p>
+          <h2 class="text-xl font-black text-white">Pulso de la plataforma</h2>
+          <p class="mt-1 text-sm font-semibold text-white/55">Volumen operativo registrado por los restaurantes.</p>
+        </div>
+        <div id="sa-chart-activity" class="mt-4 min-h-[260px]"></div>
+      </article>
+    </section>
+
+    <!-- Restaurantes list -->
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-black text-slate-900">Restaurantes</h2>
+        <a href="restaurantes.html" class="text-sm font-bold text-purple-600 hover:text-purple-700">Ver todos →</a>
+      </div>
+      <div id="sa-rest-list" class="space-y-3">
+        <p class="text-sm text-slate-400">Cargando...</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/superadmin-auth.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const sesion = saProteger();
+      if (!sesion) return;
+      document.getElementById("sa-nombre").textContent = sesion.nombre || sesion.usuario;
+
+      try {
+        const [dash, rests] = await Promise.all([
+          saApi("/superadmin/dashboard"),
+          saApi("/superadmin/restaurantes"),
+        ]);
+        const d = dash.data;
+        document.getElementById("s-rest").textContent = d.restaurantes.activos + "/" + d.restaurantes.total;
+        document.getElementById("s-admins").textContent = d.admins;
+        document.getElementById("s-meseros").textContent = d.meseros;
+        document.getElementById("s-cocineros").textContent = d.cocineros;
+        document.getElementById("s-platos").textContent = d.platos;
+        document.getElementById("s-pedidos").textContent = d.pedidosHoy;
+        renderPlatformCharts(d);
+
+        const list = document.getElementById("sa-rest-list");
+        if (!rests.data.length) { list.innerHTML = '<p class="text-sm text-slate-400">No hay restaurantes aún.</p>'; return; }
+        list.innerHTML = rests.data.map(r => `
+          <a href="credenciales.html?slug=${r.slug}" class="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-4 hover:border-purple-300 hover:bg-purple-50 transition-all">
+            <div class="flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl text-white text-sm font-black" style="background:${r.color_primario || '#7c3aed'}">
+                ${r.nombre.charAt(0)}
+              </div>
+              <div>
+                <p class="text-sm font-black text-slate-900">${r.nombre}</p>
+                <p class="text-xs text-slate-500">/${r.slug}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 text-xs text-slate-500">
+              <span><i class="bi bi-shield-lock me-1"></i>${r.num_admins}</span>
+              <span><i class="bi bi-people me-1"></i>${r.num_trabajadores}</span>
+              <span><i class="bi bi-book me-1"></i>${r.num_platos}</span>
+              <span class="rounded-lg px-2 py-1 ${r.activo ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">${r.activo ? 'Activo' : 'Inactivo'}</span>
+            </div>
+          </a>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    function renderPlatformCharts(data) {
+      if (typeof ApexCharts === "undefined") return;
+      const common = { chart: { toolbar: { show: false }, fontFamily: "Karla, system-ui, sans-serif" }, dataLabels: { enabled: false } };
+      new ApexCharts(document.querySelector("#sa-chart-roles"), {
+        ...common,
+        chart: { ...common.chart, type: "bar", height: 260 },
+        series: [{ name: "Usuarios", data: [Number(data.admins || 0), Number(data.meseros || 0), Number(data.cocineros || 0)] }],
+        colors: ["#7c3aed"],
+        plotOptions: { bar: { borderRadius: 9, columnWidth: "44%", distributed: true } },
+        xaxis: { categories: ["Administradores", "Meseros", "Cocina"], labels: { style: { colors: "#64748b", fontWeight: 700 } } },
+        yaxis: { labels: { style: { colors: "#94a3b8" } } },
+        grid: { borderColor: "#eef2f7", strokeDashArray: 5 },
+        legend: { show: false },
+        tooltip: { theme: "light" }
+      }).render();
+
+      new ApexCharts(document.querySelector("#sa-chart-activity"), {
+        ...common,
+        chart: { ...common.chart, type: "donut", height: 260 },
+        series: [Number(data.pedidosHoy || 0), Number(data.platos || 0)],
+        labels: ["Pedidos de hoy", "Platos publicados"],
+        colors: ["#a78bfa", "#fb923c"],
+        stroke: { width: 0 },
+        legend: { position: "bottom", labels: { colors: "#cbd5e1" } },
+        plotOptions: { pie: { donut: { size: "72%", labels: { show: true, total: { show: true, label: "Actividad", color: "#94a3b8", formatter: (w) => w.globals.seriesTotals.reduce((a,b) => a+b, 0) } } } } },
+        tooltip: { theme: "dark" }
+      }).render();
+    }
+  </script>
+</body>
+</html>

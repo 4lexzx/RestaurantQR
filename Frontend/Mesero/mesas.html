@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Mesas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+
+<body class="min-h-screen bg-[#f7f3ec] text-slate-900">
+
+  <nav class="mg-nav waiter-nav">
+    <div class="mg-nav-inner">
+      <a href="mesas.html" class="mg-nav-brand">
+        <img src="../img/Log.png" alt="Logo" class="mg-nav-logo-img" data-logo />
+        <span class="waiter-brand-copy"><span class="mg-nav-title" id="mesero-nombre">Mesero</span><small>Sala & servicio</small></span>
+      </a>
+      <div class="mg-nav-links">
+        <a href="mesas.html" class="mg-nav-link active"><i class="bi bi-grid-3x3-gap"></i><span>Mesas</span></a>
+        <a href="tomar_pedido.html" class="mg-nav-link"><i class="bi bi-cart-plus"></i><span>Tomar pedido</span></a>
+        <a href="pedidos.html?vista=listos" class="mg-nav-link"><i class="bi bi-bell"></i><span>Entregas</span></a>
+        <a href="pedidos.html?vista=local" class="mg-nav-link"><i class="bi bi-receipt-cutoff"></i><span>Cuentas</span></a>
+        <a href="unir_mesas.html" class="mg-nav-link"><i class="bi bi-arrow-left-right"></i><span>Unir mesas</span></a>
+        <a href="pago_cruzado.html" class="mg-nav-link"><i class="bi bi-currency-exchange"></i><span>Pago cruzado</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="waiter-shell">
+
+    <header class="waiter-page-head waiter-section-head">
+      <div><p class="waiter-eyebrow"><i class="bi bi-broadcast-pin"></i> Operación en vivo</p><h1 class="waiter-page-title">Mapa de sala</h1><p class="waiter-page-desc">Consulta el estado real de cada mesa, detecta solicitudes y entra directamente al pedido sin perder el contexto del salón.</p></div>
+      <div class="waiter-section-visual visual-tables" aria-hidden="true"><div class="visual-core"><i class="bi bi-grid-3x3-gap-fill"></i></div><span class="visual-satellite satellite-a"><i class="bi bi-person-fill"></i></span><span class="visual-satellite satellite-b"><i class="bi bi-check2"></i></span></div>
+    </header>
+
+    <section class="waiter-metrics">
+      <article class="waiter-metric" style="--metric:#16a34a;--metric-soft:#dcfce7">
+        <div class="waiter-metric-icon"><i class="bi bi-check-circle"></i></div>
+        <div><strong id="stat-libres">0</strong><span>Libres</span></div>
+      </article>
+      <article class="waiter-metric" style="--metric:#d97706;--metric-soft:#fef3c7">
+        <div class="waiter-metric-icon"><i class="bi bi-person-fill"></i></div>
+        <div><strong id="stat-ocupadas">0</strong><span>Ocupadas</span></div>
+      </article>
+      <article class="waiter-metric" style="--metric:#2563eb;--metric-soft:#dbeafe">
+        <div class="waiter-metric-icon"><i class="bi bi-credit-card"></i></div>
+        <div><strong id="stat-pagadas">0</strong><span>Pagadas</span></div>
+      </article>
+      <article class="waiter-metric" style="--metric:#0f172a;--metric-soft:#f1f5f9">
+        <div class="waiter-metric-icon"><i class="bi bi-layers"></i></div>
+        <div><strong id="stat-unidas">0</strong><span>Unidas</span></div>
+      </article>
+    </section>
+
+    <section class="waiter-toolbar">
+      <div class="waiter-table-search-row">
+        <label class="waiter-table-search" for="buscar-mesa">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <span><small>Buscar mesa</small><input id="buscar-mesa" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" placeholder="Número de mesa" aria-describedby="resultado-busqueda-mesas"></span>
+          <button id="limpiar-busqueda-mesa" type="button" aria-label="Limpiar búsqueda" hidden><i class="bi bi-x-lg"></i></button>
+        </label>
+        <p id="resultado-busqueda-mesas" class="waiter-table-search-result" aria-live="polite">Todas las mesas</p>
+      </div>
+      <div class="waiter-table-filter-row">
+        <div class="mg-filter-bar">
+          <button type="button" data-filtro="todas" onclick="cambiarFiltroMesas('todas')"
+            class="mg-filter-btn active">Todas</button>
+          <button type="button" data-filtro="libre" onclick="cambiarFiltroMesas('libre')"
+            class="mg-filter-btn">Libres</button>
+          <button type="button" data-filtro="ocupada" onclick="cambiarFiltroMesas('ocupada')"
+            class="mg-filter-btn">Ocupadas</button>
+          <button type="button" data-filtro="pagada" onclick="cambiarFiltroMesas('pagada')"
+            class="mg-filter-btn">Pagadas</button>
+          <button type="button" data-filtro="unida" onclick="cambiarFiltroMesas('unida')"
+            class="mg-filter-btn">Unidas</button>
+        </div>
+        <button type="button" onclick="restaurarMesasDemo()"
+          class="mg-btn mg-btn-danger">
+          <i class="bi bi-arrow-counterclockwise me-1"></i>Resetear estados manuales
+        </button>
+      </div>
+    </section>
+
+    <section id="alertas-comentarios-mesa" class="mg-card mb-5 hidden"></section>
+
+    <section id="pedidos-llevar-listos" class="mg-card mb-5 hidden"></section>
+
+    <section id="contenedor-mesas" class="waiter-table-grid">
+    </section>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/splash.js"></script>
+  <script src="../js/animaciones.js" defer></script>
+  <script src="../js/tiempo-real.js"></script>
+  <script src="../js/personal-auth.js"></script>
+  <script src="../js/mesas.js?v=20260901d"></script>
+  <script>
+    (function () {
+      const sesion = JSON.parse(localStorage.getItem('menugo_mesero_sesion') || 'null');
+      if (sesion?.nombre) {
+        const el = document.getElementById('mesero-nombre');
+        if (el) el.textContent = sesion.nombre;
+      }
+    })();
+  </script>
+</body>
+
+</html>

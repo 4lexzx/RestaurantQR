@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuGo | Dashboard Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <script src="../js/theme-init.js"></script>
+</head>
+<body class="admin-page admin-dashboard-page min-h-screen text-slate-900">
+  <!-- Nav -->
+  <nav class="mg-nav admin-nav">
+    <div class="mg-nav-inner">
+      <a href="dashboard.html" class="mg-nav-brand">
+        <img src="../img/Log.png" alt="Logo" class="mg-nav-logo-img" data-logo />
+        <span class="mg-nav-title" id="admin-nombre" data-tenant-name>Restaurante</span>
+      </a>
+      <div class="mg-nav-links">
+        <a href="dashboard.html" class="mg-nav-link active"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+        <a href="productos.html" class="mg-nav-link"><i class="bi bi-book me-1"></i>Menú</a>
+        <a href="trabajadores.html" class="mg-nav-link"><i class="bi bi-people me-1"></i>Personal</a>
+        <a href="configuracion.html" class="mg-nav-link"><i class="bi bi-gear me-1"></i>Config</a>
+        <button onclick="cerrarSesionAdmin()" class="mg-nav-logout"><i class="bi bi-box-arrow-right"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="admin-shell">
+    <!-- Hero -->
+    <div class="mg-hero admin-hero" data-hero>
+      <div class="mg-hero-row">
+        <div>
+          <p class="mg-hero-subtitle"><span class="admin-live-dot"></span> Negocio en vivo</p>
+          <h1 class="mg-hero-title">Tu restaurante, en perspectiva</h1>
+          <p class="mg-hero-desc">Ventas, demanda y productos clave en una vista diseñada para decidir rápido.</p>
+        </div>
+        <div class="admin-hero-pulse" aria-hidden="true">
+          <span class="admin-pulse-orbit"></span>
+          <i class="bi bi-graph-up-arrow"></i>
+          <small>ANÁLISIS</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="mg-stats admin-stats" data-anim-stagger>
+      <div class="mg-stat">
+        <div class="mg-stat-icon"><i class="bi bi-cash-stack"></i></div>
+        <p class="mg-stat-value">S/ <span id="stat-ventas-hoy">0.00</span></p>
+        <p class="mg-stat-label">Ventas de hoy</p>
+      </div>
+      <div class="mg-stat">
+        <div class="mg-stat-icon"><i class="bi bi-receipt"></i></div>
+        <p class="mg-stat-value" id="stat-pedidos-hoy">0</p>
+        <p class="mg-stat-label">Pedidos pagados</p>
+      </div>
+      <div class="mg-stat">
+        <div class="mg-stat-icon"><i class="bi bi-graph-up-arrow"></i></div>
+        <p class="mg-stat-value">S/ <span id="stat-ticket-promedio">0.00</span></p>
+        <p class="mg-stat-label">Ticket promedio</p>
+      </div>
+      <div class="mg-stat">
+        <div class="mg-stat-icon"><i class="bi bi-trophy"></i></div>
+        <p class="mg-stat-value text-lg" id="stat-plato-lider">Sin datos</p>
+        <p class="mg-stat-label">Plato líder</p>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <section class="admin-chart-grid" data-anim-stagger>
+      <article class="mg-card admin-panel admin-chart-card admin-sales-card">
+        <div class="mg-section-header admin-chart-heading">
+          <div>
+            <span class="admin-panel-kicker">TENDENCIA</span>
+            <h2 class="mg-section-title">Ritmo de ventas</h2>
+            <p class="mg-section-subtitle">Ingresos diarios y promedio móvil del período.</p>
+          </div>
+          <select id="rango-grafica-ventas" class="mg-input w-auto" onchange="cargarGrafica()">
+            <option value="7">Últimos 7 días</option>
+            <option value="15">Últimos 15 días</option>
+            <option value="30">Últimos 30 días</option>
+          </select>
+        </div>
+        <div class="admin-chart-insights" aria-label="Resumen del período">
+          <div><span>Total</span><strong id="chart-total-periodo">S/ 0.00</strong></div>
+          <div><span>Promedio diario</span><strong id="chart-promedio-periodo">S/ 0.00</strong></div>
+          <div><span>Mejor día</span><strong id="chart-mejor-dia">—</strong></div>
+        </div>
+        <div class="admin-chart-stage"><div id="grafica-ventas" class="admin-chart-canvas"></div></div>
+      </article>
+
+      <article class="mg-card admin-panel admin-chart-card">
+        <div class="mg-section-header">
+          <div>
+            <span class="admin-panel-kicker">POPULARIDAD</span>
+            <h2 class="mg-section-title">Platos más vendidos</h2>
+            <p class="mg-section-subtitle">Ranking por cantidad vendida.</p>
+          </div>
+        </div>
+        <div class="mg-filter-bar mb-4 border-b border-slate-200 pb-4">
+          <button class="mg-filter-btn active" data-tipo="semana" onclick="aplicarFiltroRanking('semana')">Esta semana</button>
+          <button class="mg-filter-btn" data-tipo="mes" onclick="aplicarFiltroRanking('mes')">Este mes</button>
+          <button class="mg-filter-btn" data-tipo="personalizado" onclick="aplicarFiltroRanking('personalizado')">Personalizado</button>
+        </div>
+        <div id="filtro-fecha-personalizado" class="mb-4 hidden">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <div>
+              <label class="mg-label">Desde</label>
+              <input type="date" id="fecha-desde-ranking" class="mg-input w-auto">
+            </div>
+            <div>
+              <label class="mg-label">Hasta</label>
+              <input type="date" id="fecha-hasta-ranking" class="mg-input w-auto">
+            </div>
+            <button onclick="cargarRankingPorFecha()" class="mg-btn mg-btn-primary">Aplicar</button>
+          </div>
+        </div>
+        <div id="grafica-platos" class="w-full rounded-2xl"></div>
+        <div id="ranking-platos" class="mt-4 space-y-2"></div>
+      </article>
+    </section>
+
+    <!-- Report -->
+    <section class="admin-report-grid" data-anim-stagger>
+      <article class="mg-card mg-card-accent admin-panel">
+        <h2 class="mg-section-title" style="color: var(--mg-p900, #7c3aed)">Consultar ventas por día</h2>
+        <p class="mt-1 mg-section-subtitle" style="color: var(--mg-p700, #6d28d9)">Selecciona una fecha para ver el resumen.</p>
+        <form id="form-reporte-ventas" class="mt-5 space-y-4">
+          <div>
+            <label class="mg-label" style="color: var(--mg-p600, #7c3aed)">Fecha a consultar</label>
+            <input id="fecha-reporte" type="date" class="mg-input" />
+          </div>
+          <button type="submit" class="mg-btn mg-btn-primary w-full"><i class="bi bi-search me-1"></i>Consultar ventas</button>
+        </form>
+      </article>
+
+      <article class="mg-card admin-panel">
+        <div class="mg-section-header">
+          <div>
+            <h2 class="mg-section-title">Resultado del reporte</h2>
+            <p id="origen-reporte" class="mg-section-subtitle">Selecciona una fecha para consultar.</p>
+          </div>
+          <button id="btn-exportar-ventas" onclick="exportarReporteVentasExcel()" class="mg-btn mg-ghost" disabled><i class="bi bi-file-earmark-excel me-1"></i>Exportar Excel</button>
+        </div>
+        <div id="resultado-reporte" class="mt-4 rounded-2xl bg-slate-50 p-4 text-sm font-semibold text-slate-600">
+          Aún no hay consulta realizada.
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/splash.js"></script>
+  <script src="../js/animaciones.js" defer></script>
+  <script src="../js/tiempo-real.js"></script>
+  <script src="../js/admin-auth.js"></script>
+  <script>
+    function aplicarColoresStats() {
+      const root = document.documentElement;
+      const cs = getComputedStyle(root);
+      const p = cs.getPropertyValue("--mg-p500").trim() || cs.getPropertyValue("--mg-primary").trim() || "#0891B2";
+      const p100 = cs.getPropertyValue("--mg-p100").trim() || "#e0f2fe";
+      const p200 = cs.getPropertyValue("--mg-p200").trim() || "#bae6fd";
+      const icons = document.querySelectorAll(".mg-stat-icon");
+      if (icons.length >= 4) {
+        icons[0].style.background = p100; icons[0].style.color = p;
+        icons[1].style.background = "#dcfce7"; icons[1].style.color = "#16a34a";
+        icons[2].style.background = p200; icons[2].style.color = p;
+        icons[3].style.background = "#fef3c7"; icons[3].style.color = "#d97706";
+      }
+    }
+    window.addEventListener("menugo:theme", aplicarColoresStats);
+    document.addEventListener("DOMContentLoaded", () => setTimeout(aplicarColoresStats, 600));
+  </script>
+  <script src="../js/admin-dashboard.js"></script>
+</body>
+</html>

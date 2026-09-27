@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MenuGo | Cocina</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
+    <script src="../js/theme-init.js"></script>
+</head>
+
+<body class="kitchen-page min-h-screen">
+
+    <!-- Nav -->
+    <nav class="mg-nav kitchen-nav">
+        <div class="mg-nav-inner">
+            <a href="pedidos.html" class="mg-nav-brand">
+                <img src="../img/Log.png" alt="Logo" class="mg-nav-logo-img" data-logo />
+                <span class="mg-nav-title">Cocina <small>Centro de producción</small></span>
+            </a>
+            <div class="mg-nav-links">
+                <span class="mg-nav-user" id="cocina-nombre"></span>
+                <button onclick="cerrarSesionPersonal('cocina')" class="mg-nav-logout"><i class="bi bi-box-arrow-right me-1"></i>Salir</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="kitchen-shell">
+
+        <!-- Hero -->
+        <header class="kitchen-hero" data-hero>
+            <div class="kitchen-hero-copy">
+                <p class="kitchen-eyebrow"><span></span><i class="bi bi-broadcast"></i> Operación en tiempo real</p>
+                <h1>Comandas de cocina</h1>
+                <p>Prioriza, prepara y libera cada pedido con una lectura rápida de toda la operación.</p>
+                <div class="kitchen-live-pill"><i class="bi bi-wifi"></i><span>Cocina conectada</span></div>
+            </div>
+            <div class="kitchen-hero-visual" aria-hidden="true">
+                <div class="kitchen-orbit"></div>
+                <div class="kitchen-main-icon"><i class="bi bi-fire"></i></div>
+                <span class="kitchen-satellite satellite-clock"><i class="bi bi-clock-fill"></i></span>
+                <span class="kitchen-satellite satellite-ready"><i class="bi bi-check2"></i></span>
+            </div>
+        </header>
+
+        <section class="kitchen-metrics" data-anim-stagger="0" data-anim-step="70">
+            <article><span class="kitchen-metric-icon metric-all"><i class="bi bi-receipt"></i></span><div><strong id="kitchen-stat-total">0</strong><small>Comandas activas</small></div></article>
+            <article><span class="kitchen-metric-icon metric-pending"><i class="bi bi-hourglass-split"></i></span><div><strong id="kitchen-stat-pending">0</strong><small>Por iniciar</small></div></article>
+            <article><span class="kitchen-metric-icon metric-cooking"><i class="bi bi-fire"></i></span><div><strong id="kitchen-stat-cooking">0</strong><small>En preparación</small></div></article>
+            <article><span class="kitchen-metric-icon metric-ready"><i class="bi bi-check-circle-fill"></i></span><div><strong id="kitchen-stat-ready">0</strong><small>Listos</small></div></article>
+        </section>
+
+        <!-- Filtros -->
+        <section class="kitchen-toolbar" data-anim="fade-up">
+            <div><p>Vista de trabajo</p><strong>Filtrar comandas</strong></div>
+            <div class="mg-filter-bar kitchen-filters">
+                <button data-kitchen-filter="todos" onclick="filtrarPedidos('todos')" class="mg-filter-btn active">
+                    <i class="bi bi-list-ul me-1"></i>Todos
+                </button>
+                <button data-kitchen-filter="Pendiente" onclick="filtrarPedidos('Pendiente')"
+                    class="mg-filter-btn">
+                    <i class="bi bi-clock me-1"></i>Pendientes
+                </button>
+                <button data-kitchen-filter="En preparación" onclick="filtrarPedidos('En preparación')"
+                    class="mg-filter-btn">
+                    <i class="bi bi-fire me-1"></i>En preparación
+                </button>
+                <button data-kitchen-filter="listos" onclick="filtrarPedidos('listos')"
+                    class="mg-filter-btn">
+                    <i class="bi bi-check-circle me-1"></i>Listos
+                </button>
+            </div>
+        </section>
+
+        <!-- Pedidos -->
+        <section id="contenedor-pedidos" class="kitchen-board">
+            <!-- Los pedidos se cargan con cocina.js -->
+        </section>
+
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/splash.js"></script>
+    <script src="../js/animaciones.js" defer></script>
+    <script src="../js/tiempo-real.js"></script>
+    <script src="../js/personal-auth.js"></script>
+    <script src="../js/cocina.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sesion = window.MENUGO_PERSONAL_SESION;
+            if (sesion) {
+                const nombreEl = document.getElementById('cocina-nombre');
+                if (nombreEl) nombreEl.textContent = sesion.nombre || sesion.email;
+            }
+        });
+    </script>
+</body>
+
+</html>
