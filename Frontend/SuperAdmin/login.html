@@ -5,49 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MenuGo | SuperAdmin</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="../css/theme.css?v=20260901d">
-  <style>
-    .sa-login-bg {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #7c3aed 100%);
-    }
-    .sa-glow {
-      box-shadow: 0 0 80px rgba(124, 58, 237, 0.3), 0 0 160px rgba(124, 58, 237, 0.1);
-    }
-    .sa-input {
-      transition: all 0.2s;
-    }
-    .sa-input:focus {
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
-      border-color: #7c3aed;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/theme.css?v=20260928a">
   <script src="../js/theme-init.js"></script>
 </head>
-<body class="min-h-screen bg-[#0f172a]">
-  <main class="flex min-h-screen items-center justify-center px-4 py-8">
-    <section class="grid w-full max-w-5xl overflow-hidden rounded-[32px] bg-white shadow-2xl lg:grid-cols-[1.1fr_1fr] sa-glow">
+<body class="tenant-login-page min-h-screen">
+  <main class="tenant-login-stage">
+    <section class="tenant-login-shell">
       <!-- Hero -->
-      <aside class="sa-login-bg p-8 text-white md:p-10 flex flex-col justify-between">
+      <aside class="tenant-login-brand">
         <div>
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+          <div class="tenant-login-brand-top">
+            <div class="tenant-login-logo grid place-items-center">
               <svg class="h-7 w-7 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
             </div>
             <div>
-              <p class="text-xs font-black uppercase tracking-[0.25em] text-purple-300">MenuGo</p>
-              <h1 class="text-xl font-black">Panel SuperAdmin</h1>
+              <p class="tenant-login-name">MenuGo</p>
+              <span>Control general</span>
             </div>
           </div>
-          <div class="mt-16 space-y-4">
-            <h2 class="text-4xl font-black leading-tight">Gestiona tu plataforma SaaS.</h2>
+          <div class="tenant-login-brand-copy mt-16">
+            <p class="tenant-login-eyebrow">Administración central</p>
+            <h2 class="tenant-login-claim">Gestiona toda la operación.</h2>
             <p class="text-base font-medium text-white/70 max-w-sm">
               Administra restaurantes, credenciales y supervisa todas las operaciones desde un solo lugar.
             </p>
           </div>
         </div>
-        <div class="mt-12 flex items-center gap-3 text-sm text-white/50">
+        <div class="tenant-login-feature">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
           </svg>
@@ -56,29 +43,21 @@
       </aside>
 
       <!-- Form -->
-      <section class="p-8 md:p-10">
+      <section class="tenant-login-form">
         <div id="sa-mensaje" class="mb-5 hidden rounded-2xl border px-4 py-3 text-sm font-bold"></div>
 
-        <div class="mb-6">
-          <p class="text-xs font-black uppercase tracking-wide text-purple-600">Autenticación</p>
-          <h2 class="mt-1 text-3xl font-black text-slate-950">Iniciar sesión</h2>
-          <p class="mt-2 text-sm text-slate-500 font-medium">Acceso exclusivo para super administradores.</p>
+        <div class="tenant-login-form-head">
+          <span class="tenant-login-form-icon"><i class="bi bi-shield-lock"></i></span>
+          <p>Autenticación</p>
+          <h2>Iniciar sesión</h2>
+          <span>Acceso exclusivo para la administración general.</span>
         </div>
 
         <form id="sa-form" class="space-y-4">
-          <div>
-            <label class="mb-1 block text-xs font-black uppercase tracking-wide text-slate-500">Usuario</label>
-            <input id="sa-user" type="text" autocomplete="username" placeholder="Tu usuario"
-              class="sa-input w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold outline-none" />
-          </div>
-          <div>
-            <label class="mb-1 block text-xs font-black uppercase tracking-wide text-slate-500">Contraseña</label>
-            <input id="sa-pass" type="password" autocomplete="current-password" placeholder="Tu contraseña"
-              class="sa-input w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold outline-none" />
-          </div>
-          <button type="submit" id="sa-btn"
-            class="w-full rounded-2xl bg-purple-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-purple-900/20 hover:bg-purple-700 transition-all">
-            Entrar al panel
+          <label class="tenant-field"><span>Usuario</span><div class="tenant-input-wrap"><i class="bi bi-person"></i><input id="sa-user" type="text" autocomplete="username" placeholder="Tu usuario" /></div></label>
+          <label class="tenant-field"><span>Contraseña</span><div class="tenant-input-wrap"><i class="bi bi-lock"></i><input id="sa-pass" type="password" autocomplete="current-password" placeholder="Tu contraseña" /></div></label>
+          <button type="submit" id="sa-btn" class="tenant-login-submit">
+            <span>Entrar al panel</span><i class="bi bi-arrow-right"></i>
           </button>
         </form>
       </section>

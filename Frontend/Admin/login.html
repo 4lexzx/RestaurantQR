@@ -6,54 +6,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MenuGo | Acceso Administrador</title>
   <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="../css/theme.css?v=20260901d">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="../css/theme.css?v=20260928a">
   <script src="../js/theme-init.js"></script>
   </head>
 
 <body class="tenant-login-page min-h-screen bg-[#f7f3ec] text-slate-900">
-  <main class="flex min-h-screen items-center justify-center px-4 py-8">
+  <main class="tenant-login-stage">
     <section data-hero class="tenant-login-shell grid w-full max-w-5xl overflow-hidden rounded-[32px] bg-white shadow-2xl shadow-slate-950/20 lg:grid-cols-[1fr_1.1fr]">
       <aside class="tenant-login-brand bg-gradient-to-br from-slate-950 via-slate-900 to-orange-700 p-8 text-white md:p-10">
-        <div class="flex items-center gap-4">
-          <img src="../img/Log.png" alt="Logo MenuGo" class="h-20 w-20 rounded-full bg-white object-contain p-2 shadow-md" data-logo />
+        <div class="tenant-login-brand-top">
+          <img src="../img/Log.png" alt="Logo MenuGo" class="tenant-login-logo" data-logo />
           <div>
-            <p class="tenant-login-name text-sm font-black uppercase tracking-[0.25em] text-orange-200" data-tenant-name>MenuGo</p>
-            <h1 class="text-3xl font-black">Administrador</h1>
+            <p class="tenant-login-name" data-tenant-name>MenuGo</p>
+            <span>Administración</span>
           </div>
         </div>
 
-        <div class="mt-12 space-y-5">
+        <div class="tenant-login-brand-copy">
+          <span class="tenant-login-role-icon"><i class="bi bi-command"></i></span>
+          <p class="tenant-login-eyebrow">Centro de control</p>
           <h2 class="tenant-login-claim text-4xl font-black leading-tight">Controla ventas, menú y personal.</h2>
           <p class="max-w-md text-base font-medium text-white/85">
             Ingresa con la cuenta administrativa autorizada para acceder al panel de gestión del restaurante.
           </p>
         </div>
+        <div class="tenant-login-feature"><i class="bi bi-graph-up-arrow"></i><span>Información del negocio en un solo lugar</span></div>
       </aside>
 
       <section class="tenant-login-form p-6 md:p-10">
         <div id="mensaje-login" class="mb-5 hidden rounded-2xl border px-4 py-3 text-sm font-bold"></div>
 
-        <div class="mb-6 rounded-3xl bg-slate-50 p-5">
-          <p class="text-sm font-black uppercase tracking-wide text-slate-500">Acceso administrativo</p>
-          <h2 class="mt-1 text-3xl font-black text-slate-950">Iniciar sesión</h2>
-          <p class="mt-2 text-sm font-semibold text-slate-500">
-            Solo usuarios autorizados deben ingresar a esta sección.
-          </p>
+        <div class="tenant-login-form-head">
+          <span class="tenant-login-form-icon"><i class="bi bi-shield-lock"></i></span>
+          <p>Acceso administrativo</p>
+          <h2>Iniciar sesión</h2>
+          <span>Solo usuarios autorizados pueden acceder a la gestión.</span>
         </div>
 
         <form id="form-login-admin" class="space-y-4">
-          <div>
-            <label for="login-email" class="mb-1 block text-xs font-black uppercase tracking-wide text-slate-500">Usuario</label>
-            <input id="login-email" type="text" autocomplete="username" placeholder="Ingresa tu usuario" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-orange-500" />
-          </div>
-          <div>
-            <label for="login-password" class="mb-1 block text-xs font-black uppercase tracking-wide text-slate-500">Contraseña</label>
-            <input id="login-password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-orange-500" />
-          </div>
-          <button type="submit" class="w-full rounded-2xl bg-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-900/20 hover:bg-orange-600">
-            Entrar al panel
+          <label class="tenant-field">
+            <span>Usuario o correo</span>
+            <div class="tenant-input-wrap"><i class="bi bi-person"></i><input id="login-email" type="text" autocomplete="username" placeholder="Ingresa tu usuario" /></div>
+          </label>
+          <label class="tenant-field">
+            <span>Contraseña</span>
+            <div class="tenant-input-wrap"><i class="bi bi-lock"></i><input id="login-password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" /></div>
+          </label>
+          <button type="submit" class="tenant-login-submit">
+            <span>Entrar al panel</span><i class="bi bi-arrow-right"></i>
           </button>
         </form>
+        <p class="tenant-login-foot"><i class="bi bi-lock-fill"></i> Sesión protegida y vinculada al restaurante.</p>
       </section>
     </section>
   </main>
