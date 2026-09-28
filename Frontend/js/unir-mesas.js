@@ -39,7 +39,7 @@ function textoEstadoUnir(estado) {
 }
 
 function mesaDisponibleParaUnion(mesa) {
-  return mesa.estado !== "unida";
+  return mesa.estado === "libre";
 }
 
 function numeroMesa(mesa) { return Number(mesa.numero_mesa || mesa.numero); }

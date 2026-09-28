@@ -205,7 +205,12 @@ async function listarMesas(req, res) {
         mesaActual.solicitud_cuenta = mapearSolicitudCuenta(row);
       }
       
-      if (row.id_grupo_mesa && Number(row.total_pendiente) > 0) {
+      // Un grupo con una sola mesa es la cuenta operativa de esa mesa, no una
+      // "union de mesas". Conservamos ese grupo cuando tiene consumo pendiente,
+      // pero una union real (dos o mas mesas) siempre tiene prioridad visual.
+      const esUnionReal = Number(row.mesas_en_grupo) > 1;
+      const grupoActualEsUnion = Number(mesaActual.mesas_en_grupo) > 1;
+      if (row.id_grupo_mesa && (esUnionReal || (Number(row.total_pendiente) > 0 && !grupoActualEsUnion))) {
         mesaActual.id_grupo_mesa = row.id_grupo_mesa;
         mesaActual.nombre_grupo = row.nombre_grupo;
         mesaActual.mesa_principal = row.mesa_principal;
@@ -223,12 +228,12 @@ async function listarMesas(req, res) {
       const tienePagos = row.total_pagado > 0;
       const mesasEnGrupo = row.mesas_en_grupo;
       
-      if (tienePendiente) {
+      if (row.id_grupo_mesa && mesasEnGrupo > 1) {
+        estado = "unida";
+      } else if (tienePendiente) {
         estado = "ocupada";
       } else if (tienePagos && !tienePendiente) {
         estado = "pagada";
-      } else if (row.id_grupo_mesa && mesasEnGrupo > 1 && tienePendiente) {
-        estado = "unida";
       }
       
       return {
@@ -360,17 +365,43 @@ async function unirMesas(req, res) {
 
     await client.query("BEGIN");
 
-    const ocupadas = await client.query(
+    const yaUnidas = await client.query(
       `SELECT m.numero_mesa, gm.id_grupo_mesa, gm.nombre_grupo
        FROM mesas m
        INNER JOIN grupo_mesa_detalle gmd ON gmd.id_mesa = m.id_mesa
        INNER JOIN grupos_mesa gm ON gm.id_grupo_mesa = gmd.id_grupo_mesa
-       WHERE gm.estado = 'activo' AND m.numero_mesa = ANY($1::int[])`,
+       WHERE gm.estado = 'activo'
+         AND m.numero_mesa = ANY($1::int[])
+         AND (SELECT COUNT(*) FROM grupo_mesa_detalle x WHERE x.id_grupo_mesa = gm.id_grupo_mesa) > 1`,
+      [mesas],
+    );
+    if (yaUnidas.rows.length > 0) {
+      await client.query("ROLLBACK");
+      return res.status(400).json({ ok: false, message: `Mesa(s) ya unidas: ${yaUnidas.rows.map((m) => m.numero_mesa).join(", ")}` });
+    }
+
+    const ocupadas = await client.query(
+      `SELECT m.numero_mesa
+       FROM mesas m
+       INNER JOIN grupo_mesa_detalle gmd ON gmd.id_mesa = m.id_mesa
+       INNER JOIN grupos_mesa gm ON gm.id_grupo_mesa = gmd.id_grupo_mesa AND gm.estado = 'activo'
+       INNER JOIN pedidos p ON p.id_grupo_mesa = gm.id_grupo_mesa
+       INNER JOIN detalle_producto dp ON dp.id_pedido = p.id_pedido
+       WHERE m.numero_mesa = ANY($1::int[])
+         AND p.estado IN ('pendiente','preparando','listo','entregado')
+       GROUP BY m.numero_mesa
+       HAVING SUM(dp.subtotal - COALESCE((
+         SELECT SUM(dpg.monto)
+         FROM detalle_pago dpg
+         INNER JOIN pagos pg ON pg.id_pago = dpg.id_pago
+         WHERE dpg.id_detalle_producto = dp.id_detalle_producto
+           AND pg.estado_pago = 'pagado'
+       ), 0)) > 0`,
       [mesas],
     );
     if (ocupadas.rows.length > 0) {
       await client.query("ROLLBACK");
-      return res.status(400).json({ ok: false, message: `Mesa(s) ya unidas: ${ocupadas.rows.map((m) => m.numero_mesa).join(", ")}` });
+      return res.status(400).json({ ok: false, message: `No se pueden unir mesas ocupadas: ${ocupadas.rows.map((m) => m.numero_mesa).join(", ")}` });
     }
 
     const nombre = req.body.nombre_grupo || `Grupo Mesa ${mesas.join(" + ")}`;
@@ -446,17 +477,49 @@ async function desunirMesas(req, res) {
   try {
     const idOrPrincipal = req.params.mesa_principal;
     await client.query("BEGIN");
-    const grupo = await client.query(
-      `UPDATE grupos_mesa
-       SET estado = 'cerrado'
-       WHERE estado = 'activo' AND (id_grupo_mesa::text = $1 OR mesa_principal::text = $1)
-       RETURNING *`,
+    const grupoEncontrado = await client.query(
+      `SELECT gm.*
+       FROM grupos_mesa gm
+       WHERE gm.estado = 'activo'
+         AND (gm.id_grupo_mesa::text = $1 OR gm.mesa_principal::text = $1)
+         AND (SELECT COUNT(*) FROM grupo_mesa_detalle gmd WHERE gmd.id_grupo_mesa = gm.id_grupo_mesa) > 1
+       ORDER BY (gm.id_grupo_mesa::text = $1) DESC, gm.fecha_creacion DESC
+       LIMIT 1`,
       [String(idOrPrincipal)],
     );
-    if (!grupo.rows.length) {
+    if (!grupoEncontrado.rows.length) {
       await client.query("ROLLBACK");
       return res.status(404).json({ ok: false, message: "Union no encontrada" });
     }
+
+    const grupoActivo = grupoEncontrado.rows[0];
+    const cuentaPendiente = await client.query(
+      `SELECT 1
+       FROM pedidos p
+       INNER JOIN detalle_producto dp ON dp.id_pedido = p.id_pedido
+       WHERE p.id_grupo_mesa = $1
+         AND p.estado IN ('pendiente','preparando','listo','entregado')
+       GROUP BY p.id_grupo_mesa
+       HAVING SUM(dp.subtotal - COALESCE((
+         SELECT SUM(dpg.monto)
+         FROM detalle_pago dpg
+         INNER JOIN pagos pg ON pg.id_pago = dpg.id_pago
+         WHERE dpg.id_detalle_producto = dp.id_detalle_producto
+           AND pg.estado_pago = 'pagado'
+       ), 0)) > 0`,
+      [grupoActivo.id_grupo_mesa],
+    );
+    if (cuentaPendiente.rows.length) {
+      await client.query("ROLLBACK");
+      return res.status(409).json({ ok: false, message: "No se puede desunir el grupo mientras tenga una cuenta pendiente" });
+    }
+
+    const grupo = await client.query(
+      `UPDATE grupos_mesa SET estado = 'cerrado'
+       WHERE id_grupo_mesa = $1
+       RETURNING *`,
+      [grupoActivo.id_grupo_mesa],
+    );
     await client.query("COMMIT");
     res.json({ ok: true, message: "Mesas desunidas correctamente", data: grupo.rows[0] });
   } catch (error) {
@@ -482,6 +545,7 @@ async function getInfoMesas(req, res) {
        INNER JOIN mesas m ON m.id_mesa = gmd.id_mesa
        WHERE gm.estado = 'activo'
        GROUP BY gm.id_grupo_mesa
+       HAVING COUNT(DISTINCT m.id_mesa) > 1
        ORDER BY gm.fecha_creacion DESC`,
     );
 
