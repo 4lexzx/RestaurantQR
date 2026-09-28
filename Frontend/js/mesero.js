@@ -149,8 +149,8 @@ function renderCuentasLocales() {
   }
   contenedor.innerHTML = cuentasPendientes.map((cuenta) => {
     const detalles = (cuenta.detalles || []).filter((item) => !item.pagado && Number(item.subtotal) - Number(item.monto_pagado || 0) > 0);
-    const tieneNoEntregados = detalles.some((item) => item.estado_pedido !== 'entregado');
-    const puedePagar = !tieneNoEntregados && detalles.length > 0;
+    const tieneNoEntregados = detalles.some((item) => String(item.estado_pedido || '').trim().toLowerCase() !== 'entregado');
+    const puedePagar = detalles.some((item) => item.puede_pagarse === true || String(item.estado_pedido || '').trim().toLowerCase() === 'entregado');
     
     return `
     <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-900/5">
@@ -172,7 +172,7 @@ function renderCuentasLocales() {
            Debe S/ ${soles(cuenta.total_pendiente)}
         </span>
       </div>
-      ${tieneNoEntregados ? `<div class="mt-2 rounded-2xl bg-red-50 p-3 text-sm font-bold text-red-700">Hay productos que aun no han sido entregados a la mesa. No se puede registrar el pago hasta que esten entregados.</div>` : ''}
+      ${tieneNoEntregados ? `<div class="mt-2 rounded-2xl bg-orange-50 p-3 text-sm font-bold text-orange-800">Los productos aún no entregados permanecerán bloqueados. Puedes cobrar por separado los que ya fueron entregados.</div>` : ''}
     </article>`;
   }).join("");
 }
@@ -223,14 +223,19 @@ function abrirGestionCuenta(idCuenta) {
   const contenido = document.getElementById("contenido-gestion");
   const detallesPendientes = (cuenta.detalles || []).filter((item) => Number(item.subtotal || 0) - Number(item.monto_pagado || 0) > 0);
   
-  const noEntregados = detallesPendientes.filter((item) => item.estado_pedido !== 'entregado');
+  const itemPuedePagarse = (item) => item.puede_pagarse === true || String(item.estado_pedido || '').trim().toLowerCase() === 'entregado';
+  const noEntregados = detallesPendientes.filter((item) => !itemPuedePagarse(item));
   
-  const itemsHtml = detallesPendientes.map((item) => `
-    <label class="flex items-start gap-3 border-b border-slate-100 py-3">
-      <input type="checkbox" class="item-pago h-5 w-5" data-id="${item.id_detalle_producto}" data-monto="${Number(item.subtotal) - Number(item.monto_pagado || 0)}" ${item.estado_pedido === 'entregado' ? 'checked' : 'disabled'}>
-      <span class="flex-1"><strong>${escapeHtml(item.nombre)}</strong><br><small>${escapeHtml(item.observacion || "")}</small><span class="mt-1 block text-xs font-black ${item.estado_pedido === 'entregado' ? 'text-emerald-600' : 'text-orange-600'}">${item.estado_pedido === 'entregado' ? 'Entregado a la mesa' : 'Aún no entregado'}</span></span>
+  const itemsHtml = detallesPendientes.map((item) => {
+    const puedePagarse = itemPuedePagarse(item);
+    return `
+    <label class="waiter-payment-item ${puedePagarse ? 'is-payable' : 'is-locked'}">
+      <input type="checkbox" class="item-pago" data-id="${item.id_detalle_producto}" data-monto="${Number(item.subtotal) - Number(item.monto_pagado || 0)}" ${puedePagarse ? 'checked' : 'disabled'}>
+      <span class="waiter-payment-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+      <span class="flex-1"><strong>${escapeHtml(item.nombre)}</strong><br><small>${escapeHtml(item.observacion || "")}</small><span class="mt-1 block text-xs font-black ${puedePagarse ? 'text-emerald-600' : 'text-orange-600'}">${puedePagarse ? 'Entregado a la mesa' : 'Aún no entregado'}</span></span>
       <strong>S/ ${soles(Number(item.subtotal) - Number(item.monto_pagado || 0))}</strong>
-    </label>`).join("");
+    </label>`;
+  }).join("");
   
   const totalPendiente = Number(cuenta.total_pendiente || 0);
   contenido.innerHTML = `
@@ -247,13 +252,13 @@ function abrirGestionCuenta(idCuenta) {
   <div class="grid grid-cols-1 gap-5 p-5 xl:grid-cols-[1fr_360px]">
     <section class="waiter-account-items rounded-3xl border border-slate-200 p-4">
       <div class="waiter-account-section-title"><span><i class="bi bi-basket2"></i></span><div><h3>Productos pendientes</h3><p>Selecciona qué productos se cobrarán ahora.</p></div></div>
-      ${noEntregados.length ? `<div class="mb-3 rounded-2xl border border-orange-200 bg-orange-50 p-3 text-sm font-bold text-orange-800"><i class="bi bi-hourglass-split"></i> Puedes revisar la cuenta ahora. El pago se habilitará cuando todos los productos hayan sido entregados.</div>` : ''}
+      ${noEntregados.length ? `<div class="mb-3 rounded-2xl border border-orange-200 bg-orange-50 p-3 text-sm font-bold text-orange-800"><i class="bi bi-hourglass-split"></i> Los platos pendientes permanecen bloqueados; selecciona los que ya fueron entregados para cobrarlos.</div>` : ''}
       ${itemsHtml || "<p>No hay productos pendientes.</p>"}
     </section>
-    <form onsubmit="registrarPagoCuenta(event, '${cuenta.id_cuenta}')" class="waiter-payment-form rounded-3xl bg-slate-50 p-4 ${noEntregados.length ? 'opacity-70' : ''}">
+    <form onsubmit="registrarPagoCuenta(event, '${cuenta.id_cuenta}')" class="waiter-payment-form rounded-3xl bg-slate-50 p-4">
       <div class="waiter-payment-total">
         <span><small>Total de la cuenta</small><strong>S/ ${soles(totalPendiente)}</strong></span>
-        <span><small>Seleccionado</small><strong>S/ <b id="monto-seleccionado-gestion">${soles(totalPendiente)}</b></strong></span>
+        <span><small>Seleccionado</small><strong>S/ <b id="monto-seleccionado-gestion">0.00</b></strong></span>
       </div>
       <label class="block">
         <span class="waiter-payment-label text-xs font-black uppercase text-slate-500">Método de pago</span>
@@ -276,7 +281,7 @@ function abrirGestionCuenta(idCuenta) {
         <input id="documento-pago" value="" maxlength="11" inputmode="numeric" autocomplete="off" class="waiter-payment-control mt-1 w-full rounded-xl border px-3 py-2" placeholder="Ingrese documento">
         <p id="error-documento-gestion" class="mt-1 hidden text-xs font-bold text-red-600">El documento debe tener 8 dígitos para boleta o 11 dígitos para factura</p>
       </label>
-      <button class="waiter-payment-submit mt-5 w-full rounded-2xl px-4 py-3 text-sm font-black text-white ${noEntregados.length ? 'is-disabled cursor-not-allowed' : ''}" ${noEntregados.length ? 'disabled' : ''}>${noEntregados.length ? 'Pendiente de entrega' : 'Guardar pago'}</button>
+      <button class="waiter-payment-submit mt-5 w-full rounded-2xl px-4 py-3 text-sm font-black text-white ${detallesPendientes.some(itemPuedePagarse) ? '' : 'is-disabled cursor-not-allowed'}" ${detallesPendientes.some(itemPuedePagarse) ? '' : 'disabled'}>${detallesPendientes.some(itemPuedePagarse) ? 'Guardar pago' : 'Pendiente de entrega'}</button>
     </form>
   </div>`;
 
@@ -365,10 +370,7 @@ function actualizarSimulacionPagoGestion() {
   const box = document.getElementById("simulacion-pago-gestion");
   if (!box) return;
 
-  const seleccionados = Array.from(document.querySelectorAll(".item-pago:checked"));
-  const totalPendiente = seleccionados.length
-    ? seleccionados.reduce((total, input) => total + Number(input.dataset.monto || 0), 0)
-    : 0;
+  const totalPendiente = obtenerTotalSeleccionadoGestion();
 
   if (metodo === "Yape") {
     box.className = "waiter-payment-simulation is-yape mt-3 rounded-2xl border p-3";
@@ -383,22 +385,34 @@ function actualizarSimulacionPagoGestion() {
     const montoRecibido = document.getElementById("monto-recibido-gestion");
     if (montoRecibido) {
       montoRecibido.value = totalPendiente;
-      montoRecibido.addEventListener("input", () => {
-        const recibido = Number(montoRecibido.value || 0);
-        const vuelto = Math.max(recibido - totalPendiente, 0);
-        const vueltoSpan = document.getElementById("vuelto-gestion");
-        if (vueltoSpan) vueltoSpan.textContent = soles(vuelto);
-      });
+      montoRecibido.addEventListener("input", actualizarVueltoGestion);
+      actualizarVueltoGestion();
     }
   }
 }
 
+function obtenerTotalSeleccionadoGestion() {
+  return Array.from(document.querySelectorAll(".item-pago:checked"))
+    .reduce((suma, input) => suma + Number(input.dataset.monto || 0), 0);
+}
+
+function actualizarVueltoGestion() {
+  const montoRecibido = document.getElementById("monto-recibido-gestion");
+  const vueltoSpan = document.getElementById("vuelto-gestion");
+  if (!montoRecibido || !vueltoSpan) return;
+  const recibido = Number(String(montoRecibido.value || 0).replace(',', '.')) || 0;
+  vueltoSpan.textContent = soles(Math.max(recibido - obtenerTotalSeleccionadoGestion(), 0));
+}
+
 function actualizarResumenPagoGestion() {
-  const seleccionados = Array.from(document.querySelectorAll(".item-pago:checked"));
-  const total = seleccionados.reduce((suma, input) => suma + Number(input.dataset.monto || 0), 0);
+  const total = obtenerTotalSeleccionadoGestion();
   const salida = document.getElementById("monto-seleccionado-gestion");
   if (salida) salida.textContent = soles(total);
-  actualizarSimulacionPagoGestion();
+  const montoRecibido = document.getElementById("monto-recibido-gestion");
+  if (montoRecibido && (!montoRecibido.value || Number(montoRecibido.value) < total)) {
+    montoRecibido.value = total;
+  }
+  actualizarVueltoGestion();
 }
 
 function activarCajasCodigoYapeGestion() {
