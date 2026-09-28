@@ -20,3 +20,83 @@ html[data-mg-color-scheme="dark"] .bg-slate-950,html[data-mg-color-scheme="dark"
 .client-product-grid .mg-card-plato-precio,.metric-cooking,.waiter-account-action,.waiter-account-state.pending,.kitchen-action-start{border-color:var(--mg-p200)!important;background:var(--mg-p50)!important;color:var(--mg-p700)!important}
 .client-order-status.is-preparing{border-color:var(--mg-p200)!important;background:var(--mg-p50)!important;color:var(--mg-p700)!important}
 html[data-mg-color-scheme="dark"] .client-product-grid .mg-card-plato-precio,html[data-mg-color-scheme="dark"] .metric-cooking,html[data-mg-color-scheme="dark"] .waiter-account-action,html[data-mg-color-scheme="dark"] .waiter-account-state.pending,html[data-mg-color-scheme="dark"] .kitchen-action-start,html[data-mg-color-scheme="dark"] .client-order-status.is-preparing{border-color:color-mix(in srgb,var(--mg-p500) 50%,#3a3a3c)!important;background:color-mix(in srgb,var(--mg-p600) 20%,#1c1c1e)!important;color:var(--mg-p300)!important}
+
+/* Absolute dark-neutral sweep: remove every legacy navy surface. */
+html[data-mg-color-scheme="dark"] .tenant-login-shell,
+html[data-mg-color-scheme="dark"] .tenant-login-form,
+html[data-mg-color-scheme="dark"] .tenant-login-form>div,
+html[data-mg-color-scheme="dark"] .tenant-input-wrap,
+html[data-mg-color-scheme="dark"] .waiter-toolbar,
+html[data-mg-color-scheme="dark"] .waiter-table-search,
+html[data-mg-color-scheme="dark"] .waiter-table-card,
+html[data-mg-color-scheme="dark"] .waiter-floor-table,
+html[data-mg-color-scheme="dark"] .waiter-group,
+html[data-mg-color-scheme="dark"] .waiter-panel,
+html[data-mg-color-scheme="dark"] .waiter-money,
+html[data-mg-color-scheme="dark"] .waiter-table-empty,
+html[data-mg-color-scheme="dark"] .waiter-form-section,
+html[data-mg-color-scheme="dark"] .waiter-crosspay-layout>* ,
+html[data-mg-color-scheme="dark"] .crosspay-progress,
+html[data-mg-color-scheme="dark"] .crosspay-route-summary,
+html[data-mg-color-scheme="dark"] .client-product-grid .mg-card-plato,
+html[data-mg-color-scheme="dark"] .client-flow-card,
+html[data-mg-color-scheme="dark"] .client-current-order-card,
+html[data-mg-color-scheme="dark"] .client-cart-panel,
+html[data-mg-color-scheme="dark"] .client-cart-panel .mg-empty,
+html[data-mg-color-scheme="dark"] .mg-empty,
+html[data-mg-color-scheme="dark"] .mg-modal,
+html[data-mg-color-scheme="dark"] .mg-modal-content,
+html[data-mg-color-scheme="dark"] .mg-order-card,
+html[data-mg-color-scheme="dark"] .kitchen-ticket,
+html[data-mg-color-scheme="dark"] .kitchen-product,
+html[data-mg-color-scheme="dark"] .kitchen-empty,
+html[data-mg-color-scheme="dark"] .admin-panel,
+html[data-mg-color-scheme="dark"] .admin-config-card,
+html[data-mg-color-scheme="dark"] .admin-worker-card,
+html[data-mg-color-scheme="dark"] .admin-image-field,
+html[data-mg-color-scheme="dark"] .config-color-scope,
+html[data-mg-color-scheme="dark"] .config-color-scope>div,
+html[data-mg-color-scheme="dark"] #resultado-reporte,
+html[data-mg-color-scheme="dark"] .admin-chart-insights>div {
+  border-color:#3a3a3c!important;
+  background:#1c1c1e!important;
+  color:#f5f5f7!important;
+}
+html[data-mg-color-scheme="dark"] .tenant-input-wrap,
+html[data-mg-color-scheme="dark"] .tenant-login-form input,
+html[data-mg-color-scheme="dark"] .mg-input,
+html[data-mg-color-scheme="dark"] .config-input,
+html[data-mg-color-scheme="dark"] .admin-select-trigger,
+html[data-mg-color-scheme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
+html[data-mg-color-scheme="dark"] select,
+html[data-mg-color-scheme="dark"] textarea,
+html[data-mg-color-scheme="dark"] .kitchen-quantity,
+html[data-mg-color-scheme="dark"] .mg-chip,
+html[data-mg-color-scheme="dark"] .mg-btn-secondary,
+html[data-mg-color-scheme="dark"] .mg-btn-ghost,
+html[data-mg-color-scheme="dark"] .mg-filter-btn:not(.active) {
+  border-color:#48484a!important;
+  background:#2c2c2e!important;
+  color:#f5f5f7!important;
+  -webkit-text-fill-color:#f5f5f7!important;
+}
+html[data-mg-color-scheme="dark"] .waiter-table-actions a:first-child,
+html[data-mg-color-scheme="dark"] .waiter-table-actions a:last-child,
+html[data-mg-color-scheme="dark"] .client-product-grid .mg-card-plato-cta,
+html[data-mg-color-scheme="dark"] .kitchen-action-ready,
+html[data-mg-color-scheme="dark"] #boton-pedido-mobile {
+  border-color:#48484a!important;background:#2c2c2e!important;color:#fff!important
+}
+html[data-mg-color-scheme="dark"] .waiter-money>div,
+html[data-mg-color-scheme="dark"] .waiter-table-card [class*="bg-slate-"],
+html[data-mg-color-scheme="dark"] .client-current-order-card [class*="bg-slate-"],
+html[data-mg-color-scheme="dark"] .kitchen-ticket [class*="bg-slate-"]{background:#2c2c2e!important}
+
+/* Login rules in the legacy sheet use :not(), so match them explicitly here. */
+html[data-mg-color-scheme="dark"] .tenant-login-form>div.tenant-login-form-head,
+html[data-mg-color-scheme="dark"] .tenant-login-form>div:not(#mensaje-login):not(#mensaje-login-personal){background:#1c1c1e!important}
+html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap{border-color:#48484a!important;background:#2c2c2e!important}
+html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input{background:transparent!important;color:#f5f5f7!important;-webkit-text-fill-color:#f5f5f7!important}
+html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input:-webkit-autofill,
+html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input:-webkit-autofill:hover,
+html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px #2c2c2e inset!important;box-shadow:0 0 0 1000px #2c2c2e inset!important}
