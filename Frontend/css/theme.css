@@ -1290,10 +1290,6 @@ nav[data-nav-shrink].mg-nav-slim {
   .sa-analytics-card { padding: 1.15rem; border-radius: 1.4rem; }
 }
 
-/* Cobro de cuentas: contraste estable para cualquier tenant y esquema */
-.waiter-account-modal-head{background:#fff;color:#172033}.waiter-account-modal-title{color:#111b2a!important}.waiter-payment-kicker{color:var(--mg-p600)!important}.waiter-account-close{background:#fff;color:#334155}.waiter-account-items{background:#fff;color:#172033}.waiter-account-section-title{display:flex;align-items:center;gap:12px;margin-bottom:14px}.waiter-account-section-title>span{display:grid;width:38px;height:38px;flex:none;place-items:center;border-radius:12px;background:var(--mg-p50);color:var(--mg-p700)}.waiter-account-section-title h3{margin:0;color:#172033;font-size:16px;font-weight:900}.waiter-account-section-title p{margin:2px 0 0;color:#64748b;font-size:12px;font-weight:700}.waiter-payment-form{border:1px solid #e0e7ef;background:#f7f9fb!important;color:#172033}.waiter-payment-total{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.waiter-payment-total>span{padding:11px;border:1px solid #dce4ed;border-radius:14px;background:#fff}.waiter-payment-total small,.waiter-payment-total strong{display:block}.waiter-payment-total small{color:#718096;font-size:10px;font-weight:900;text-transform:uppercase}.waiter-payment-total strong{margin-top:3px;color:#172033;font-size:17px;font-weight:900}.waiter-payment-total>span:last-child{border-color:color-mix(in srgb,var(--mg-p500) 34%,#dce4ed);background:var(--mg-p50)}.waiter-payment-total>span:last-child strong{color:var(--mg-p700)}.waiter-payment-label{display:block;color:#64748b!important;letter-spacing:.04em}.waiter-payment-control{min-height:42px;border-color:#cdd8e5!important;background:#fff!important;color:#172033!important;-webkit-text-fill-color:#172033!important;caret-color:var(--mg-p600);outline:none}.waiter-payment-control::placeholder{color:#8290a3!important;-webkit-text-fill-color:#8290a3!important;opacity:1}.waiter-payment-control:focus{border-color:var(--mg-p500)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--mg-p500) 13%,transparent)!important}.waiter-payment-simulation{border-color:#cfe2dd;background:#eefaf5;color:#116149}.waiter-payment-simulation.is-yape{border-color:#ded2f1;background:#f5f0fb;color:#64439a}.waiter-payment-simulation.is-card{border-color:#d9e1eb;background:#eef3f8;color:#334155}.waiter-payment-change{color:#12684f}.waiter-payment-submit{border:0;background:var(--mg-p600);box-shadow:0 12px 24px color-mix(in srgb,var(--mg-p600) 25%,transparent);transition:.18s}.waiter-payment-submit:not(:disabled):hover{filter:brightness(1.08);transform:translateY(-1px)}.waiter-payment-submit.is-disabled{background:#64748b;box-shadow:none;opacity:.72}
-html[data-mg-color-scheme="dark"] #panel-gestion>div,html[data-mg-color-scheme="dark"] .waiter-account-modal-head,html[data-mg-color-scheme="dark"] .waiter-account-items{border-color:#304056!important;background:#141e2c!important;color:#edf3fa!important}html[data-mg-color-scheme="dark"] .waiter-account-modal-title,html[data-mg-color-scheme="dark"] .waiter-account-section-title h3{color:#f5f8fc!important}html[data-mg-color-scheme="dark"] .waiter-account-section-title p{color:#9fb0c4!important}html[data-mg-color-scheme="dark"] .waiter-account-close{border-color:#3a4a60!important;background:#1a2636!important;color:#dfe8f3!important}html[data-mg-color-scheme="dark"] .waiter-payment-form{border-color:#304056!important;background:#101927!important;color:#edf3fa!important}html[data-mg-color-scheme="dark"] .waiter-payment-total>span{border-color:#344257;background:#182435}html[data-mg-color-scheme="dark"] .waiter-payment-total>span:last-child{border-color:color-mix(in srgb,var(--mg-p500) 52%,#344257);background:color-mix(in srgb,var(--mg-p950) 34%,#182435)}html[data-mg-color-scheme="dark"] .waiter-payment-total small{color:#9fb0c4}html[data-mg-color-scheme="dark"] .waiter-payment-total strong{color:#f3f7fc}html[data-mg-color-scheme="dark"] .waiter-payment-total>span:last-child strong{color:var(--mg-p300)}html[data-mg-color-scheme="dark"] .waiter-payment-label{color:#b7c4d4!important}html[data-mg-color-scheme="dark"] .waiter-payment-control{border-color:#40516a!important;background:#1b2839!important;color:#f8fafc!important;-webkit-text-fill-color:#f8fafc!important}html[data-mg-color-scheme="dark"] .waiter-payment-control::placeholder{color:#92a2b7!important;-webkit-text-fill-color:#92a2b7!important}html[data-mg-color-scheme="dark"] .waiter-payment-simulation{border-color:#28624f;background:#102d27;color:#a7f3d0}html[data-mg-color-scheme="dark"] .waiter-payment-simulation.is-yape{border-color:#594378;background:#241d35;color:#ddd0f3}html[data-mg-color-scheme="dark"] .waiter-payment-simulation.is-card{border-color:#3a4a60;background:#182435;color:#d9e3ef}html[data-mg-color-scheme="dark"] .waiter-payment-change{color:#a7f3d0}
-
 /* =========================================================
    MENUGO 2026 · REDISEÑO INTEGRAL POR SUPERFICIE
    Se apoya en data-mg-surface/data-mg-page inyectados antes
@@ -1902,3 +1898,470 @@ html[data-mg-color-scheme="dark"] .waiter-table-search{border-color:#344257;back
   .waiter-table-search-row{grid-template-columns:1fr;gap:5px;margin-bottom:5px}.waiter-table-search{min-height:48px;grid-template-columns:33px minmax(0,1fr) 29px;gap:7px;padding:4px 6px}.waiter-table-search>i{width:32px;height:32px;border-radius:10px;font-size:13px}.waiter-table-search small{font-size:7px}.waiter-table-search input{font-size:14px}.waiter-table-search-result{padding:0 5px;font-size:9px}
   .waiter-table-filter-row{display:block;padding-top:5px}.waiter-table-filter-row .mg-filter-bar{display:flex;overflow-x:auto;flex-wrap:nowrap!important;gap:4px;padding-bottom:2px;scrollbar-width:none}.waiter-table-filter-row .mg-filter-bar::-webkit-scrollbar{display:none}.waiter-table-filter-row .mg-filter-btn{flex:none;padding:7px 10px!important;font-size:9px!important}.waiter-table-filter-row>.mg-btn{display:none}
 }
+
+/* =========================================================
+   APPLE DESIGN SYSTEM · single-restaurant edition
+   Shared, semantic finish for Cliente, Mesero, Cocina/Admin.
+   ========================================================= */
+:root {
+  --apple-bg: #f2f2f7;
+  --apple-surface: rgba(255, 255, 255, .88);
+  --apple-surface-solid: #ffffff;
+  --apple-elevated: #ffffff;
+  --apple-label: #1d1d1f;
+  --apple-secondary-label: #636366;
+  --apple-tertiary-label: #8e8e93;
+  --apple-separator: rgba(60, 60, 67, .16);
+  --apple-fill: rgba(120, 120, 128, .12);
+  --apple-fill-strong: rgba(120, 120, 128, .20);
+  --apple-blue: #007aff;
+  --apple-green: #248a3d;
+  --apple-red: #d70015;
+  --apple-radius-control: 12px;
+  --apple-radius-card: 20px;
+  --apple-radius-panel: 28px;
+  --apple-shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 34px rgba(0,0,0,.055);
+  --mg-bg: var(--apple-bg);
+  --mg-surface: var(--apple-surface-solid);
+  --mg-heading: var(--apple-label);
+  --mg-text: var(--apple-secondary-label);
+  --mg-muted: var(--apple-tertiary-label);
+  --mg-line: var(--apple-separator);
+  --mg-radius-sm: 10px;
+  --mg-radius: 14px;
+  --mg-radius-lg: 20px;
+  --mg-radius-xl: 28px;
+  --mg-shadow-sm: 0 1px 2px rgba(0,0,0,.035);
+  --mg-shadow: var(--apple-shadow);
+  --mg-shadow-lg: 0 18px 50px rgba(0,0,0,.09);
+}
+
+html { font-size: 16px; }
+body,
+button,
+input,
+select,
+textarea {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", sans-serif !important;
+}
+body {
+  background: var(--apple-bg) !important;
+  color: var(--apple-label);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+h1, h2, h3, h4,
+.text-3xl, .text-4xl, .text-5xl,
+.waiter-page-title,
+.kitchen-hero h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif !important;
+  color: var(--apple-label);
+  font-weight: 700 !important;
+  letter-spacing: -.035em !important;
+}
+p, .mg-section-subtitle, .mg-card-subtitle { line-height: 1.5; }
+small, .mg-stat-label, .mg-eyebrow, .waiter-eyebrow, .kitchen-eyebrow {
+  letter-spacing: .02em !important;
+}
+
+/* Navigation is the floating functional layer; color stays in content/actions. */
+.mg-nav,
+.admin-nav,
+.waiter-nav,
+.kitchen-nav {
+  top: 8px !important;
+  margin: 0 10px !important;
+  border: 1px solid rgba(255,255,255,.72) !important;
+  border-radius: 22px !important;
+  background: rgba(249,249,251,.78) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.07) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(24px) !important;
+  backdrop-filter: saturate(180%) blur(24px) !important;
+}
+.mg-nav-inner { min-height: 64px !important; padding: 8px 12px !important; }
+.mg-nav-logo-img { width: 40px !important; height: 40px !important; border-radius: 12px !important; }
+.mg-nav-title { color: var(--apple-label) !important; font-size: 15px !important; font-weight: 650 !important; }
+.mg-nav-links { gap: 3px !important; padding: 4px !important; border-radius: 14px !important; background: var(--apple-fill) !important; }
+.mg-nav-link {
+  min-height: 40px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: var(--apple-secondary-label) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transition: background-color .16s ease, color .16s ease, transform .16s ease !important;
+}
+.mg-nav-link:hover { background: rgba(255,255,255,.7) !important; color: var(--apple-label) !important; }
+.mg-nav-link.active {
+  background: var(--apple-surface-solid) !important;
+  color: var(--apple-label) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.10) !important;
+}
+.mg-nav-link.active i { color: var(--mg-p600) !important; }
+.mg-dark-toggle,
+.mg-nav-logout {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  border: 1px solid var(--apple-separator) !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,.72) !important;
+  color: var(--apple-label) !important;
+  box-shadow: none !important;
+}
+
+/* Calm grouped surfaces. */
+.mg-card,
+.mg-stat,
+.admin-panel,
+.admin-config-card,
+.admin-worker-card,
+.waiter-panel,
+.waiter-metric,
+.waiter-table-card,
+.waiter-floor-table,
+.waiter-group,
+.kitchen-metrics article,
+.kitchen-ticket,
+.client-flow-card,
+.client-current-order-card,
+.client-cart-panel,
+.mg-order-card {
+  border: 1px solid var(--apple-separator) !important;
+  border-radius: var(--apple-radius-card) !important;
+  background: var(--apple-surface-solid) !important;
+  color: var(--apple-label) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.025) !important;
+}
+.mg-card:hover,
+.admin-worker-card:hover,
+.waiter-table-card:hover,
+.kitchen-ticket:hover {
+  border-color: rgba(60,60,67,.24) !important;
+  box-shadow: var(--apple-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+.mg-stat::after { display: none !important; }
+.mg-stat-value, .mg-section-title, .mg-card-title { color: var(--apple-label) !important; }
+.mg-stat-label, .mg-section-subtitle, .mg-card-subtitle { color: var(--apple-secondary-label) !important; }
+
+/* Heroes become content headers, not decorative billboards. */
+.mg-hero,
+.admin-hero,
+.admin-config-hero,
+.waiter-section-head,
+.kitchen-hero,
+.client-menu-hero,
+.client-order-hero,
+.client-flow-hero {
+  min-height: unset !important;
+  border: 1px solid var(--apple-separator) !important;
+  border-radius: var(--apple-radius-panel) !important;
+  background: var(--apple-surface-solid) !important;
+  color: var(--apple-label) !important;
+  box-shadow: none !important;
+}
+.mg-hero::before, .mg-hero::after,
+.admin-hero::before, .admin-hero::after,
+.waiter-section-head::before, .waiter-section-head::after,
+.kitchen-hero::before, .kitchen-hero::after { opacity: .06 !important; }
+.mg-hero-title,
+.waiter-section-head .waiter-page-title,
+.kitchen-hero h1,
+.client-menu-hero h1,
+.client-order-hero h1 { color: var(--apple-label) !important; }
+.mg-hero-desc,
+.mg-hero-subtitle,
+.waiter-section-head .waiter-page-desc,
+.kitchen-hero-copy > p:not(.kitchen-eyebrow),
+.client-menu-hero p,
+.client-order-hero p { color: var(--apple-secondary-label) !important; }
+.waiter-section-visual,
+.kitchen-hero-visual,
+.client-hero-art { opacity: .72 !important; filter: saturate(.72) !important; }
+
+/* Controls: immediate feedback, stable sizes, one clear accent. */
+button,
+[role="button"],
+.mg-btn,
+.waiter-primary-action,
+.waiter-add-button,
+.kitchen-actions button,
+.client-hero-action,
+.mg-card-plato-cta {
+  min-height: 44px;
+  border-radius: var(--apple-radius-control) !important;
+  font-weight: 650 !important;
+  letter-spacing: -.01em !important;
+  transition: transform .12s ease, filter .12s ease, background-color .16s ease !important;
+}
+button:active,
+[role="button"]:active,
+.mg-btn:active,
+.mg-card-plato-cta:active { transform: scale(.975) !important; }
+.mg-btn-primary,
+.waiter-primary-action,
+.waiter-add-button,
+.client-hero-action,
+.mg-card-plato-cta {
+  border: 0 !important;
+  background: var(--mg-p600) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+.mg-btn-secondary,
+.mg-btn-ghost,
+.mg-filter-btn,
+.mg-tab {
+  border: 1px solid var(--apple-separator) !important;
+  background: var(--apple-fill) !important;
+  color: var(--apple-label) !important;
+  box-shadow: none !important;
+}
+.mg-btn-danger { background: rgba(215,0,21,.08) !important; color: var(--apple-red) !important; box-shadow: none !important; }
+.mg-btn-success { background: var(--apple-green) !important; color: #fff !important; box-shadow: none !important; }
+button:disabled, .mg-btn:disabled { opacity: .42 !important; filter: grayscale(.15); }
+
+.mg-input,
+input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
+select,
+textarea,
+.admin-select,
+.config-input,
+.client-search-input {
+  min-height: 44px !important;
+  border: 1px solid var(--apple-separator) !important;
+  border-radius: var(--apple-radius-control) !important;
+  background: var(--apple-surface-solid) !important;
+  color: var(--apple-label) !important;
+  box-shadow: none !important;
+  font-size: 16px !important;
+}
+input::placeholder,
+textarea::placeholder,
+.mg-input::placeholder { color: var(--apple-tertiary-label) !important; opacity: .72 !important; }
+input:focus, select:focus, textarea:focus, .mg-input:focus {
+  border-color: var(--apple-blue) !important;
+  outline: 3px solid rgba(0,122,255,.16) !important;
+  outline-offset: 0 !important;
+}
+:focus-visible { outline: 3px solid rgba(0,122,255,.48) !important; outline-offset: 2px !important; }
+
+/* Lists and segmented filters. */
+.mg-tabs,
+.mg-filter-bar,
+.kitchen-toolbar,
+.waiter-toolbar {
+  border: 1px solid var(--apple-separator) !important;
+  border-radius: 16px !important;
+  background: var(--apple-fill) !important;
+  box-shadow: none !important;
+}
+.mg-tab.active,
+.mg-filter-btn.active,
+.kitchen-filters .mg-filter-btn.active {
+  background: var(--apple-surface-solid) !important;
+  color: var(--apple-label) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.12) !important;
+}
+.mg-chip, .mg-badge, .kitchen-state, .waiter-status { border-radius: 999px !important; }
+.mg-list-item, .kitchen-product { border-color: var(--apple-separator) !important; background: transparent !important; }
+
+/* Product cards favor food and content instead of decoration. */
+.mg-card-plato {
+  overflow: hidden;
+  border: 1px solid var(--apple-separator) !important;
+  border-radius: 20px !important;
+  background: var(--apple-surface-solid) !important;
+  box-shadow: none !important;
+}
+.mg-card-plato:hover { box-shadow: var(--apple-shadow) !important; transform: translateY(-1px) !important; }
+.mg-card-plato-img { border-radius: 0 !important; }
+.mg-card-plato-precio { color: var(--apple-label) !important; }
+
+/* Dark appearance uses semantic elevation, softened whites, and no navy-on-navy. */
+html[data-mg-color-scheme="dark"] {
+  --apple-bg: #000000;
+  --apple-surface: rgba(28,28,30,.82);
+  --apple-surface-solid: #1c1c1e;
+  --apple-elevated: #2c2c2e;
+  --apple-label: #f5f5f7;
+  --apple-secondary-label: #aeaeb2;
+  --apple-tertiary-label: #8e8e93;
+  --apple-separator: rgba(84,84,88,.62);
+  --apple-fill: rgba(118,118,128,.24);
+  --apple-fill-strong: rgba(118,118,128,.32);
+  color-scheme: dark;
+}
+html[data-mg-color-scheme="dark"] body,
+html[data-mg-color-scheme="dark"] .admin-page,
+html[data-mg-color-scheme="dark"] .waiter-page,
+html[data-mg-color-scheme="dark"] .kitchen-page,
+html[data-mg-color-scheme="dark"] .client-menu-page { background: var(--apple-bg) !important; color: var(--apple-label) !important; }
+html[data-mg-color-scheme="dark"] .mg-nav,
+html[data-mg-color-scheme="dark"] .admin-nav,
+html[data-mg-color-scheme="dark"] .waiter-nav,
+html[data-mg-color-scheme="dark"] .kitchen-nav { border-color: rgba(84,84,88,.55) !important; background: rgba(28,28,30,.76) !important; }
+html[data-mg-color-scheme="dark"] .mg-nav-links { background: rgba(118,118,128,.22) !important; }
+html[data-mg-color-scheme="dark"] .mg-nav-link.active { background: #3a3a3c !important; color: #fff !important; }
+html[data-mg-color-scheme="dark"] .mg-card,
+html[data-mg-color-scheme="dark"] .mg-stat,
+html[data-mg-color-scheme="dark"] .admin-panel,
+html[data-mg-color-scheme="dark"] .admin-config-card,
+html[data-mg-color-scheme="dark"] .admin-worker-card,
+html[data-mg-color-scheme="dark"] .waiter-panel,
+html[data-mg-color-scheme="dark"] .waiter-metric,
+html[data-mg-color-scheme="dark"] .waiter-table-card,
+html[data-mg-color-scheme="dark"] .waiter-floor-table,
+html[data-mg-color-scheme="dark"] .waiter-group,
+html[data-mg-color-scheme="dark"] .kitchen-metrics article,
+html[data-mg-color-scheme="dark"] .kitchen-ticket,
+html[data-mg-color-scheme="dark"] .client-flow-card,
+html[data-mg-color-scheme="dark"] .mg-card-plato,
+html[data-mg-color-scheme="dark"] .mg-hero,
+html[data-mg-color-scheme="dark"] .admin-hero,
+html[data-mg-color-scheme="dark"] .waiter-section-head,
+html[data-mg-color-scheme="dark"] .kitchen-hero,
+html[data-mg-color-scheme="dark"] .client-menu-hero,
+html[data-mg-color-scheme="dark"] .client-order-hero { border-color: var(--apple-separator) !important; background: var(--apple-surface-solid) !important; color: var(--apple-label) !important; }
+html[data-mg-color-scheme="dark"] .mg-input,
+html[data-mg-color-scheme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
+html[data-mg-color-scheme="dark"] select,
+html[data-mg-color-scheme="dark"] textarea { border-color: var(--apple-separator) !important; background: var(--apple-elevated) !important; color: var(--apple-label) !important; }
+
+/* Compact width: an iOS-like persistent tab bar with safe-area clearance. */
+@media (max-width: 760px) {
+  body { padding-bottom: calc(88px + env(safe-area-inset-bottom)) !important; }
+  .admin-shell, .waiter-shell, .kitchen-shell, .client-menu-shell { padding-right: 14px !important; padding-left: 14px !important; }
+  .mg-nav, .admin-nav, .waiter-nav, .kitchen-nav { top: 5px !important; margin: 0 6px !important; border-radius: 18px !important; }
+  .mg-nav-inner { min-height: 58px !important; flex-direction: row !important; align-items: center !important; gap: 8px !important; }
+  .mg-nav-brand { min-width: 0; flex: 1 1 auto; }
+  .mg-nav-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .waiter-nav .mg-nav-links,
+  .admin-nav .mg-nav-links,
+  .kitchen-nav .mg-nav-links {
+    position: fixed !important;
+    z-index: 100 !important;
+    right: 8px !important;
+    bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    left: 8px !important;
+    top: auto !important;
+    display: flex !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    padding: 5px !important;
+    border: 1px solid rgba(255,255,255,.72) !important;
+    border-radius: 20px !important;
+    background: rgba(249,249,251,.88) !important;
+    box-shadow: 0 12px 34px rgba(0,0,0,.14) !important;
+    -webkit-backdrop-filter: saturate(180%) blur(24px) !important;
+    backdrop-filter: saturate(180%) blur(24px) !important;
+    scrollbar-width: none;
+  }
+  .waiter-nav .mg-nav-link,
+  .admin-nav .mg-nav-link,
+  .kitchen-nav .mg-nav-link {
+    min-width: 66px !important;
+    min-height: 50px !important;
+    flex: 1 0 66px !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    padding: 5px 4px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+  }
+  .mg-nav-link i { font-size: 17px !important; }
+  html[data-mg-color-scheme="dark"] .waiter-nav .mg-nav-links,
+  html[data-mg-color-scheme="dark"] .admin-nav .mg-nav-links,
+  html[data-mg-color-scheme="dark"] .kitchen-nav .mg-nav-links { border-color: rgba(84,84,88,.62) !important; background: rgba(28,28,30,.88) !important; }
+  .mg-hero, .admin-hero, .waiter-section-head, .kitchen-hero, .client-menu-hero, .client-order-hero { border-radius: 22px !important; padding: 24px 20px !important; }
+  .waiter-section-visual, .kitchen-hero-visual, .client-hero-art { display: none !important; }
+  .kitchen-hero-copy, .waiter-section-head > div:first-child { max-width: 100% !important; }
+  .mg-card, .admin-panel, .waiter-panel, .kitchen-ticket, .mg-card-plato { border-radius: 18px !important; }
+  button, [role="button"], .mg-btn { min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .mg-nav, .admin-nav, .waiter-nav, .kitchen-nav,
+  .waiter-nav .mg-nav-links, .admin-nav .mg-nav-links, .kitchen-nav .mg-nav-links {
+    background: var(--apple-surface-solid) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* Apple account and cross-payment surfaces. Extra root specificity preserves the
+   semantic palette even though the legacy payment fallback remains below. */
+html body .waiter-crosspay-layout > *,
+html body .waiter-form-section,
+html body .crosspay-progress,
+html body .crosspay-route-summary,
+html body .waiter-account-modal-head,
+html body .waiter-account-items,
+html body .waiter-payment-form,
+html body .waiter-payment-total > span {
+  border-color: var(--apple-separator) !important;
+  background: var(--apple-surface-solid) !important;
+  color: var(--apple-label) !important;
+  box-shadow: none !important;
+}
+html[data-mg-color-scheme="dark"] body .waiter-account-modal-head,
+html[data-mg-color-scheme="dark"] body .waiter-account-items,
+html[data-mg-color-scheme="dark"] body .waiter-payment-form,
+html[data-mg-color-scheme="dark"] body .waiter-payment-total > span,
+html[data-mg-color-scheme="dark"] body .waiter-payment-control,
+html[data-mg-color-scheme="dark"] body .waiter-account-close {
+  border-color: var(--apple-separator) !important;
+  background: var(--apple-surface-solid) !important;
+  color: var(--apple-label) !important;
+  -webkit-text-fill-color: var(--apple-label) !important;
+}
+html body .waiter-form-section-title,
+html body .waiter-account-modal-title,
+html body .waiter-account-section-title h3,
+html body .waiter-payment-total strong { color: var(--apple-label) !important; }
+html body .crosspay-route-summary,
+html body .waiter-account-section-title p,
+html body .waiter-payment-label,
+html body .waiter-payment-total small { color: var(--apple-secondary-label) !important; }
+html body .waiter-payment-control,
+html body .waiter-account-close {
+  border-color: var(--apple-separator) !important;
+  background: var(--apple-fill) !important;
+  color: var(--apple-label) !important;
+  -webkit-text-fill-color: var(--apple-label) !important;
+}
+html body .waiter-payment-total > span:last-child {
+  border-color: color-mix(in srgb, var(--mg-p600) 38%, var(--apple-separator)) !important;
+  background: color-mix(in srgb, var(--mg-p600) 8%, var(--apple-surface-solid)) !important;
+}
+html body .waiter-payment-total > span:last-child strong,
+html body .waiter-payment-kicker { color: var(--mg-p600) !important; }
+
+@media (max-width: 760px) {
+  .waiter-crosspay-layout { grid-template-columns: 1fr !important; }
+  .waiter-crosspay-stats { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .waiter-account-modal-head,
+  .waiter-account-items,
+  .waiter-payment-form { border-radius: 18px !important; }
+}
+
+/* Cobro de cuentas: contraste estable para cualquier tenant y esquema */
+.waiter-account-modal-head{background:#fff;color:#172033}.waiter-account-modal-title{color:#111b2a!important}.waiter-payment-kicker{color:var(--mg-p600)!important}.waiter-account-close{background:#fff;color:#334155}.waiter-account-items{background:#fff;color:#172033}.waiter-account-section-title{display:flex;align-items:center;gap:12px;margin-bottom:14px}.waiter-account-section-title>span{display:grid;width:38px;height:38px;flex:none;place-items:center;border-radius:12px;background:var(--mg-p50);color:var(--mg-p700)}.waiter-account-section-title h3{margin:0;color:#172033;font-size:16px;font-weight:900}.waiter-account-section-title p{margin:2px 0 0;color:#64748b;font-size:12px;font-weight:700}.waiter-payment-form{border:1px solid #e0e7ef;background:#f7f9fb!important;color:#172033}.waiter-payment-total{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.waiter-payment-total>span{padding:11px;border:1px solid #dce4ed;border-radius:14px;background:#fff}.waiter-payment-total small,.waiter-payment-total strong{display:block}.waiter-payment-total small{color:#718096;font-size:10px;font-weight:900;text-transform:uppercase}.waiter-payment-total strong{margin-top:3px;color:#172033;font-size:17px;font-weight:900}.waiter-payment-total>span:last-child{border-color:color-mix(in srgb,var(--mg-p500) 34%,#dce4ed);background:var(--mg-p50)}.waiter-payment-total>span:last-child strong{color:var(--mg-p700)}.waiter-payment-label{display:block;color:#64748b!important;letter-spacing:.04em}.waiter-payment-control{min-height:42px;border-color:#cdd8e5!important;background:#fff!important;color:#172033!important;-webkit-text-fill-color:#172033!important;caret-color:var(--mg-p600);outline:none}.waiter-payment-control::placeholder{color:#8290a3!important;-webkit-text-fill-color:#8290a3!important;opacity:1}.waiter-payment-control:focus{border-color:var(--mg-p500)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--mg-p500) 13%,transparent)!important}.waiter-payment-simulation{border-color:#cfe2dd;background:#eefaf5;color:#116149}.waiter-payment-simulation.is-yape{border-color:#ded2f1;background:#f5f0fb;color:#64439a}.waiter-payment-simulation.is-card{border-color:#d9e1eb;background:#eef3f8;color:#334155}.waiter-payment-change{color:#12684f}.waiter-payment-submit{border:0;background:var(--mg-p600);box-shadow:0 12px 24px color-mix(in srgb,var(--mg-p600) 25%,transparent);transition:.18s}.waiter-payment-submit:not(:disabled):hover{filter:brightness(1.08);transform:translateY(-1px)}.waiter-payment-submit.is-disabled{background:#64748b;box-shadow:none;opacity:.72}
+html[data-mg-color-scheme="dark"] #panel-gestion>div,html[data-mg-color-scheme="dark"] .waiter-account-modal-head,html[data-mg-color-scheme="dark"] .waiter-account-items{border-color:#304056!important;background:#141e2c!important;color:#edf3fa!important}html[data-mg-color-scheme="dark"] .waiter-account-modal-title,html[data-mg-color-scheme="dark"] .waiter-account-section-title h3{color:#f5f8fc!important}html[data-mg-color-scheme="dark"] .waiter-account-section-title p{color:#9fb0c4!important}html[data-mg-color-scheme="dark"] .waiter-account-close{border-color:#3a4a60!important;background:#1a2636!important;color:#dfe8f3!important}html[data-mg-color-scheme="dark"] .waiter-payment-form{border-color:#304056!important;background:#101927!important;color:#edf3fa!important}html[data-mg-color-scheme="dark"] .waiter-payment-total>span{border-color:#344257;background:#182435}html[data-mg-color-scheme="dark"] .waiter-payment-total>span:last-child{border-color:color-mix(in srgb,var(--mg-p500) 52%,#344257);background:color-mix(in srgb,var(--mg-p950) 34%,#182435)}html[data-mg-color-scheme="dark"] .waiter-payment-total small{color:#9fb0c4}html[data-mg-color-scheme="dark"] .waiter-payment-total strong{color:#f3f7fc}html[data-mg-color-scheme="dark"] .waiter-payment-total>span:last-child strong{color:var(--mg-p300)}html[data-mg-color-scheme="dark"] .waiter-payment-label{color:#b7c4d4!important}html[data-mg-color-scheme="dark"] .waiter-payment-control{border-color:#40516a!important;background:#1b2839!important;color:#f8fafc!important;-webkit-text-fill-color:#f8fafc!important}html[data-mg-color-scheme="dark"] .waiter-payment-control::placeholder{color:#92a2b7!important;-webkit-text-fill-color:#92a2b7!important}html[data-mg-color-scheme="dark"] .waiter-payment-simulation{border-color:#28624f;background:#102d27;color:#a7f3d0}html[data-mg-color-scheme="dark"] .waiter-payment-simulation.is-yape{border-color:#594378;background:#241d35;color:#ddd0f3}html[data-mg-color-scheme="dark"] .waiter-payment-simulation.is-card{border-color:#3a4a60;background:#182435;color:#d9e3ef}html[data-mg-color-scheme="dark"] .waiter-payment-change{color:#a7f3d0}
