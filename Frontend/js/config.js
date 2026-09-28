@@ -256,9 +256,9 @@
 
   function sincronizarSuperficiesOscuras(activo) {
     const grupos = [
-      { selector: ".client-menu-toolbar, .client-cart-panel, .mg-modal, .mg-modal-content, .kitchen-toolbar, .kitchen-empty", fondo: "#141e2c", borde: "#2c3a4e" },
-      { selector: ".client-search-box, .client-search-clear, .mg-chip, .mg-cart-item, .kitchen-product, .kitchen-quantity, .admin-worker-card, .admin-image-field", fondo: "#101927", borde: "#2c3a4e", color: "#bdc9d9" },
-      { selector: ".mg-btn-secondary, .mg-filter-btn, .admin-select-trigger, .config-btn-outline, .config-toggle", fondo: "#192535", borde: "#344257" },
+      { selector: ".client-menu-toolbar, .client-cart-panel, .mg-modal, .mg-modal-content, .kitchen-toolbar, .kitchen-empty", fondo: "#1c1c1e", borde: "#3a3a3c" },
+      { selector: ".client-search-box, .client-search-clear, .mg-chip, .mg-cart-item, .kitchen-product, .kitchen-quantity, .admin-worker-card, .admin-image-field", fondo: "#2c2c2e", borde: "#48484a", color: "#d1d1d6" },
+      { selector: ".mg-btn-secondary, .mg-filter-btn, .admin-select-trigger, .config-btn-outline, .config-toggle", fondo: "#2c2c2e", borde: "#48484a" },
     ];
     grupos.forEach((grupo) => document.querySelectorAll(grupo.selector).forEach((elemento) => {
       if (activo) {

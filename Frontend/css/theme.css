@@ -1927,6 +1927,10 @@ html[data-mg-color-scheme="dark"] .waiter-table-search{border-color:#344257;back
   --mg-text: var(--apple-secondary-label);
   --mg-muted: var(--apple-tertiary-label);
   --mg-line: var(--apple-separator);
+  --mg-canvas: var(--apple-bg);
+  --mg-ink: var(--apple-label);
+  --mg-ink-soft: var(--apple-secondary-label);
+  --mg-soft: var(--apple-fill);
   --mg-radius-sm: 10px;
   --mg-radius: 14px;
   --mg-radius-lg: 20px;

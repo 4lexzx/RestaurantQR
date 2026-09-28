@@ -39,9 +39,18 @@
 
     // Colores: inyectar CSS variables antes del paint
     if (c.color_primario) {
-      var h = c.color_primario.replace(/^#/,'');
-      var s = c.color_secundario || '#0F172A';
-      document.write('<style>:root{--mg-primary:#'+h+';--mg-secondary:'+s+';--mg-hero:'+s+';--mg-heading:'+s+';}</style>');
+      var base = /^#[0-9a-f]{6}$/i.test(c.color_primario) ? c.color_primario : '#2563EB';
+      var mix = function(hex, white, pct) {
+        var p = pct / 100, end = white ? 255 : 0;
+        return '#' + [1,3,5].map(function(i){
+          var channel = parseInt(hex.slice(i, i + 2), 16);
+          return Math.round(end * p + channel * (1 - p)).toString(16).padStart(2, '0');
+        }).join('');
+      };
+      var scale = {50:mix(base,true,95),100:mix(base,true,87),200:mix(base,true,74),300:mix(base,true,58),400:mix(base,true,34),500:base,600:mix(base,false,13),700:mix(base,false,26),800:mix(base,false,40),900:mix(base,false,54),950:mix(base,false,70)};
+      var vars = '--mg-primary:'+base+';--mg-primary-500:'+base+';';
+      Object.keys(scale).forEach(function(step){ vars += '--mg-p'+step+':'+scale[step]+';--mg-primary-'+step+':'+scale[step]+';'; });
+      document.write('<style>:root{'+vars+'}</style>');
     }
 
     // Logo: si hay caché del tenant, reemplazar el respaldo al cargar el DOM.
