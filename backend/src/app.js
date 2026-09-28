@@ -241,24 +241,27 @@ app.post("/api/auth/login", async (req, res) => {
     return res.status(400).json({ ok: false, message: 'Usuario y clave son requeridos' });
   }
   try {
-    let result;
+    const values = [usuario];
+    let slugFilter = '';
     if (slug) {
-      result = await authPool.query(
-        "SELECT * FROM admin_login WHERE LOWER(usuario) = LOWER($1) AND LOWER(restaurante_slug) = LOWER($2) AND estado = true LIMIT 1",
-        [usuario, slug]
-      );
-    } else {
-      result = await authPool.query(
-        "SELECT * FROM admin_login WHERE LOWER(usuario) = LOWER($1) AND estado = true",
-        [usuario]
-      );
+      values.push(slug);
+      slugFilter = 'AND LOWER(r.slug) = LOWER($2)';
     }
+    const result = await authPool.query(
+      `SELECT a.idadministrador, a.usuario, a.clave, a.nombrecompleto, a.correo,
+              a.estado, a.id_restaurante, r.slug AS restaurante_slug,
+              r.nombre AS restaurante_nombre
+       FROM administrador a
+       LEFT JOIN restaurantes r ON r.id_restaurante = a.id_restaurante
+       WHERE (LOWER(a.usuario) = LOWER($1) OR LOWER(a.correo) = LOWER($1))
+         AND a.estado = true
+         ${slugFilter}
+       LIMIT 1`,
+      values
+    );
     const { rows } = result;
     if (!rows.length) {
       return res.status(401).json({ ok: false, message: 'Usuario o clave incorrectos' });
-    }
-    if (rows.length > 1 && !slug) {
-      return res.json({ ok: false, multiple: true, accounts: rows.map(r => ({ id_restaurante: r.id_restaurante, restaurante_slug: r.restaurante_slug, restaurante_nombre: r.restaurante_nombre })) });
     }
     const admin = rows[0];
     const claveOk = await bcrypt.compare(String(clave), admin.clave);

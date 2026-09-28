@@ -100,3 +100,15 @@ html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input{ba
 html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input:-webkit-autofill,
 html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input:-webkit-autofill:hover,
 html[data-mg-color-scheme="dark"] .tenant-login-form .tenant-input-wrap input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px #2c2c2e inset!important;box-shadow:0 0 0 1000px #2c2c2e inset!important}
+
+/* Product actions always use the restaurant accent, never the legacy navy. */
+.client-product-grid .mg-card-plato-cta,
+html[data-mg-color-scheme="dark"] .client-product-grid .mg-card-plato-cta{border-color:var(--mg-p600)!important;background:var(--mg-p600)!important;color:#fff!important}
+.client-product-grid .peer:checked+.mg-chip,
+.client-product-grid .peer:checked~.mg-chip,
+.client-product-grid .mg-chip--on,
+.client-product-grid .mg-chip.active{border-color:var(--mg-p600)!important;background:var(--mg-p600)!important;color:#fff!important}
+.client-menu-toolbar .mg-chip-cat--on,
+.client-cart-panel button.bg-slate-950,
+.client-cart-fab,
+.client-follow-fab{border-color:var(--mg-p600)!important;background:var(--mg-p600)!important;color:#fff!important}
